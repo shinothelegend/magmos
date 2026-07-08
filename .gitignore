@@ -1,0 +1,18 @@
+# deps / builds
+node_modules/
+.next/
+out/
+cache/
+broadcast/
+dist/
+# env & secrets — never commit
+.env
+.env.*
+!.env.example
+contracts/.env.deployer
+scripts/.demo-wallets.json
+# misc
+*.log
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
