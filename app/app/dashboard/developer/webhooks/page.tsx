@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { useAccount } from "wagmi";
+import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Check, Copy, Eye, EyeOff, Plus, Trash2, Webhook, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSweemApi, type Webhook as WebhookRecord } from "@/lib/api";
 
 // Events Magmos can deliver to a merchant endpoint.
 const EVENTS = [
@@ -24,39 +27,59 @@ interface Endpoint {
   createdAt: number;
 }
 
-function makeSecret(): string {
-  const hex = "0123456789abcdef";
-  let s = "";
-  for (let i = 0; i < 40; i++) s += hex[Math.floor(Math.random() * 16)];
-  return `whsec_${s}`;
-}
-
 const mask = (k: string) => `${k.slice(0, 7)}${"•".repeat(12)}${k.slice(-4)}`;
 
 export default function WebhooksPage() {
-  const [endpoints, setEndpoints] = useState<Endpoint[]>([]);
+  const { address } = useAccount();
+  const api = useSweemApi();
+  const webhooksQuery = useQuery<WebhookRecord[]>({
+    queryKey: ["webhooks", address],
+    enabled: !!address,
+    queryFn: () => api.listWebhooks(address!),
+  });
+  // Full signing secrets are returned once at creation; keep them for this
+  // session so reveal/copy works. Endpoints loaded from the API show the prefix.
+  const [sessionSecrets, setSessionSecrets] = useState<Record<string, string>>({});
+  const endpoints: Endpoint[] = (webhooksQuery.data ?? []).map((w) => ({
+    id: w.id,
+    url: w.url,
+    events: (w.events ?? []) as EventId[],
+    secret: sessionSecrets[w.id] ?? `${w.secretPrefix ?? "whsec_"}${"•".repeat(24)}`,
+    createdAt: Date.parse(w.createdAt) || Date.now(),
+  }));
+
   const [addOpen, setAddOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Endpoint | null>(null);
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [snippetCopied, setSnippetCopied] = useState(false);
 
-  const add = (url: string, events: EventId[]) => {
-    const e: Endpoint = {
-      id: crypto.randomUUID(),
-      url: url.trim(),
-      events: events.length ? events : EVENTS.map((x) => x.id),
-      secret: makeSecret(),
-      createdAt: Date.now(),
-    };
-    setEndpoints((cur) => [e, ...cur]);
-    setAddOpen(false);
+  const add = async (url: string, events: EventId[]) => {
+    if (!address) return toast.error("Connect a wallet first");
+    try {
+      const wh = await api.createWebhook(address, {
+        url: url.trim(),
+        events: events.length ? events : EVENTS.map((x) => x.id),
+      });
+      if (wh.secret) setSessionSecrets((s) => ({ ...s, [wh.id]: wh.secret! }));
+      await webhooksQuery.refetch();
+      setAddOpen(false);
+      toast.success("Endpoint added");
+    } catch {
+      toast.error("Could not add endpoint");
+    }
   };
 
-  const remove = (id: string) => {
-    setEndpoints((cur) => cur.filter((e) => e.id !== id));
+  const remove = async (id: string) => {
+    if (!address) return;
+    try {
+      await api.deleteWebhook(address, id);
+      await webhooksQuery.refetch();
+      toast("Endpoint deleted");
+    } catch {
+      toast.error("Could not delete endpoint");
+    }
     setDeleteTarget(null);
-    toast("Endpoint deleted");
   };
 
   const copy = async (id: string, value: string, label: string) => {

@@ -1,12 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useAccount, useWriteContract } from "wagmi";
+import { useWriteContract } from "wagmi";
+import { useQuery } from "@tanstack/react-query";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Plus, Receipt, Send } from "lucide-react";
-import { erc20Abi, isAddress, type Address } from "viem";
+import { erc20Abi, isAddress } from "viem";
 
 import { CardLabel, IconChip, MoneyValue, SweemCard } from "@/components/sweem-ui/primitives";
 import { TokenIcon } from "@/components/sweem-ui/token-icon";
@@ -16,85 +17,21 @@ import { wagmiConfig } from "@/lib/wagmi";
 import { EXPLORER_TX, USDC } from "@/lib/magmos";
 import { ActionButton, ConnectGate, Modal } from "./ui";
 import { shortAddr } from "./helpers";
+import { useSweemApi, type Invoice } from "@/lib/api";
 
-// Magmos has no on-chain invoice contract, so the list is scaffolded from a few
-// tasteful sample invoices in local state (mirrors how Sweem seeded mock data).
-// "Pay" is real, though: it fires an ERC-20 USDC transfer on Arc, waits for the
-// receipt, then flips the row to paid.
+// Invoices are real: created via the Magmos API (persisted to MongoDB), listed
+// from the DB, and "Pay" fires a live ERC-20 USDC transfer on Arc, then marks
+// the invoice paid (with its tx hash) in the DB. No mock data.
 
 type InvoiceStatus = "paid" | "pending" | "overdue";
 
-interface Invoice {
-  id: string;
-  recipient: { name: string; address: Address };
-  amount: number; // USDC
-  status: InvoiceStatus;
-  issuedDate: string; // ISO yyyy-mm-dd
-  dueDate: string; // ISO yyyy-mm-dd
-}
-
 const token = TOKENS.USDC;
-
-const SAMPLE_INVOICES: Invoice[] = [
-  {
-    id: "INV-2041",
-    recipient: { name: "Amara Okafor", address: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F" },
-    amount: 4200,
-    status: "pending",
-    issuedDate: "2026-07-01",
-    dueDate: "2026-07-18",
-  },
-  {
-    id: "INV-2040",
-    recipient: { name: "Horizon Design Studio", address: "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" },
-    amount: 1850,
-    status: "paid",
-    issuedDate: "2026-07-02",
-    dueDate: "2026-07-09",
-  },
-  {
-    id: "INV-2039",
-    recipient: { name: "Priya Nair", address: "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E" },
-    amount: 3600,
-    status: "overdue",
-    issuedDate: "2026-06-16",
-    dueDate: "2026-07-02",
-  },
-  {
-    id: "INV-2038",
-    recipient: { name: "Mateo Duarte", address: "0x8ba1f109551bD432803012645Ac136ddd64DBA72" },
-    amount: 920,
-    status: "pending",
-    issuedDate: "2026-07-05",
-    dueDate: "2026-07-20",
-  },
-  {
-    id: "INV-2037",
-    recipient: { name: "Layla Haddad", address: "0xdD870fA1b7C4700F2BD7f44238821C26f7392148" },
-    amount: 5400,
-    status: "paid",
-    issuedDate: "2026-07-03",
-    dueDate: "2026-07-08",
-  },
-  {
-    id: "INV-2036",
-    recipient: { name: "Kenji Watanabe", address: "0x583031D1113aD414F02576BD6afaBfb302140225" },
-    amount: 2750,
-    status: "pending",
-    issuedDate: "2026-07-03",
-    dueDate: "2026-07-15",
-  },
-];
 
 const STATUS: Record<InvoiceStatus, { label: string; color: string; bg: string }> = {
   pending: { label: "Pending", color: "var(--sw-lavender)", bg: "rgba(255,180,61,0.14)" },
   paid: { label: "Paid", color: "var(--sw-mint)", bg: "rgba(255,106,26,0.14)" },
   overdue: { label: "Overdue", color: "#ff794b", bg: "rgba(255,121,75,0.14)" },
 };
-
-function today(): string {
-  return new Date().toISOString().slice(0, 10);
-}
 
 function fmtDate(iso: string): string {
   const d = new Date(`${iso}T00:00:00`);
@@ -116,44 +53,36 @@ function StatusPill({ status }: { status: InvoiceStatus }) {
 }
 
 export function InvoicesScreen() {
-  const { isConnected } = useAccount();
+  const api = useSweemApi();
+  const wallet = api.address;
   const { writeContractAsync } = useWriteContract();
 
-  const [invoices, setInvoices] = useState<Invoice[]>(SAMPLE_INVOICES);
-  const [seq, setSeq] = useState(2042);
-  const [payingId, setPayingId] = useState<string | null>(null);
+  const invoicesQuery = useQuery<Invoice[]>({
+    queryKey: ["invoices", wallet],
+    enabled: !!wallet,
+    queryFn: () => api.listInvoices(wallet!),
+  });
+  const invoices = invoicesQuery.data ?? [];
 
+  const [payingId, setPayingId] = useState<string | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
+  const [creating, setCreating] = useState(false);
   const [form, setForm] = useState({ name: "", address: "", amount: "", dueDate: "" });
 
-  // Metrics derived from the sample data. Outstanding = everything unpaid
-  // (pending + overdue); Overdue is the risk subset, surfaced on its own.
   const metrics = useMemo(() => {
-    let outstanding = 0;
-    let outstandingCount = 0;
-    let paid = 0;
-    let paidCount = 0;
-    let overdue = 0;
-    let overdueCount = 0;
+    let outstanding = 0, outstandingCount = 0, paid = 0, paidCount = 0, overdue = 0, overdueCount = 0;
     for (const inv of invoices) {
-      if (inv.status === "paid") {
-        paid += inv.amount;
-        paidCount++;
-      } else {
-        outstanding += inv.amount;
-        outstandingCount++;
-      }
-      if (inv.status === "overdue") {
-        overdue += inv.amount;
-        overdueCount++;
-      }
+      if (inv.status === "paid") { paid += inv.amount; paidCount++; }
+      else { outstanding += inv.amount; outstandingCount++; }
+      if (inv.status === "overdue") { overdue += inv.amount; overdueCount++; }
     }
     return { outstanding, outstandingCount, paid, paidCount, overdue, overdueCount };
   }, [invoices]);
 
-  // Real payment: an ERC-20 USDC transfer to the invoice recipient on Arc.
+  // Real payment: an ERC-20 USDC transfer to the recipient on Arc, then persist
+  // the paid status + tx hash to the DB.
   async function handlePay(inv: Invoice) {
-    if (!isConnected) return toast.error("Connect a wallet first");
+    if (!wallet) return toast.error("Connect a wallet first");
     if (payingId) return;
     setPayingId(inv.id);
     try {
@@ -161,16 +90,15 @@ export function InvoicesScreen() {
         address: USDC,
         abi: erc20Abi,
         functionName: "transfer",
-        args: [inv.recipient.address, toRaw(token, inv.amount)],
+        args: [inv.recipient.address as `0x${string}`, toRaw(token, inv.amount)],
       });
       toast.success(`Paid ${inv.amount.toLocaleString()} USDC to ${inv.recipient.name}`, {
         description: "View on Arcscan",
         action: { label: "Receipt", onClick: () => window.open(EXPLORER_TX(hash), "_blank") },
       });
       await waitForTransactionReceipt(wagmiConfig, { hash });
-      setInvoices((prev) =>
-        prev.map((x) => (x.id === inv.id ? { ...x, status: "paid" as const } : x))
-      );
+      await api.updateInvoice(wallet, inv.id, { status: "paid", txHash: hash });
+      invoicesQuery.refetch();
     } catch {
       toast.error("Payment failed");
     } finally {
@@ -178,30 +106,35 @@ export function InvoicesScreen() {
     }
   }
 
-  function handleCreate() {
+  async function handleCreate() {
     const amt = Number(form.amount) || 0;
     const addr = form.address.trim();
+    if (!wallet) return toast.error("Connect a wallet first");
     if (!form.name.trim()) return toast.error("Enter a recipient name");
     if (!isAddress(addr)) return toast.error("Enter a valid wallet address");
     if (amt <= 0) return toast.error("Enter an invoice amount");
-    const inv: Invoice = {
-      id: `INV-${seq}`,
-      recipient: { name: form.name.trim(), address: addr },
-      amount: amt,
-      status: "pending",
-      issuedDate: today(),
-      dueDate: form.dueDate || today(),
-    };
-    setInvoices((prev) => [inv, ...prev]);
-    setSeq((s) => s + 1);
-    setCreateOpen(false);
-    setForm({ name: "", address: "", amount: "", dueDate: "" });
-    toast.success(`Invoice ${inv.id} created`, {
-      description: `${amt.toLocaleString()} USDC to ${inv.recipient.name}`,
-    });
+    setCreating(true);
+    try {
+      const inv = await api.createInvoice(wallet, {
+        name: form.name.trim(),
+        address: addr,
+        amount: amt,
+        dueDate: form.dueDate || undefined,
+      });
+      await invoicesQuery.refetch();
+      setCreateOpen(false);
+      setForm({ name: "", address: "", amount: "", dueDate: "" });
+      toast.success(`Invoice ${inv.id} created`, {
+        description: `${amt.toLocaleString()} USDC to ${inv.recipient.name}`,
+      });
+    } catch {
+      toast.error("Could not create invoice");
+    } finally {
+      setCreating(false);
+    }
   }
 
-  if (!isConnected) {
+  if (!wallet) {
     return (
       <div className="dashboard-content">
         <ConnectGate message="Connect your wallet to view and pay invoices." />
@@ -294,7 +227,7 @@ export function InvoicesScreen() {
               {invoices.length === 0 && (
                 <tr>
                   <td colSpan={6} className="py-8 text-center text-[13px] text-[var(--sw-text-muted)]">
-                    No invoices yet — create your first one.
+                    {invoicesQuery.isLoading ? "Loading…" : "No invoices yet — create your first one."}
                   </td>
                 </tr>
               )}
@@ -309,30 +242,18 @@ export function InvoicesScreen() {
                   >
                     <td className="py-3.5">
                       <div className="font-mono text-[13px] font-medium text-[var(--sw-text)]">{inv.id}</div>
-                      <div className="text-[12px] text-[var(--sw-text-muted)]">
-                        Issued {fmtDate(inv.issuedDate)}
-                      </div>
+                      <div className="text-[12px] text-[var(--sw-text-muted)]">Issued {fmtDate(inv.issuedDate)}</div>
                     </td>
                     <td className="py-3.5">
                       <div className="font-medium text-[var(--sw-text)]">{inv.recipient.name}</div>
-                      <div className="text-[12px] text-[var(--sw-text-muted)]">
-                        {shortAddr(inv.recipient.address)}
-                      </div>
+                      <div className="text-[12px] text-[var(--sw-text-muted)]">{shortAddr(inv.recipient.address)}</div>
                     </td>
                     <td className="py-3.5 tabular-nums text-[var(--sw-text)]">
-                      {inv.amount.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}{" "}
+                      {inv.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}{" "}
                       <span className="text-[12px] text-[var(--sw-text-muted)]">USDC</span>
                     </td>
                     <td className="py-3.5 tabular-nums">
-                      <span
-                        className={cn(
-                          "text-[13px]",
-                          inv.status === "overdue" ? "text-[#ff794b]" : "text-[var(--sw-text-muted)]"
-                        )}
-                      >
+                      <span className={cn("text-[13px]", inv.status === "overdue" ? "text-[#ff794b]" : "text-[var(--sw-text-muted)]")}>
                         {fmtDate(inv.dueDate)}
                       </span>
                     </td>
@@ -372,8 +293,8 @@ export function InvoicesScreen() {
         footer={
           <>
             <ActionButton onClick={() => setCreateOpen(false)}>Cancel</ActionButton>
-            <ActionButton variant="primary" onClick={handleCreate}>
-              Create invoice
+            <ActionButton variant="primary" disabled={creating} onClick={handleCreate}>
+              {creating ? "Creating…" : "Create invoice"}
             </ActionButton>
           </>
         }

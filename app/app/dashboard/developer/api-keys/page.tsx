@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
+import { useQuery } from "@tanstack/react-query";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { erc20Abi } from "viem";
 import { toast } from "sonner";
@@ -17,45 +18,48 @@ import {
   USDC_DECIMALS,
   EXPLORER_TX,
 } from "@/lib/magmos";
-
-type ApiKey = { id: string; name: string; prefix: string; secret?: string; created: string };
-
-function genKey(): { prefix: string; secret: string } {
-  const bytes = new Uint8Array(24);
-  crypto.getRandomValues(bytes);
-  const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
-  return { prefix: `mk_live_${hex.slice(0, 6)}`, secret: `mk_live_${hex}` };
-}
+import { useSweemApi, type ApiKeyRecord } from "@/lib/api";
 
 const fromRaw6 = (raw: bigint) => Number(raw) / 10 ** USDC_DECIMALS;
+
+function fmtCreated(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
 
 export default function ApiKeysPage() {
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
+  const api = useSweemApi();
 
-  // ── API keys (client-side manager) ──────────────────────────────────────
-  const [keys, setKeys] = useState<ApiKey[]>([
-    { id: "k_demo", name: "Production", prefix: "mk_live_a1b2c3", created: "Jul 2, 2026" },
-  ]);
+  // ── API keys (persisted via the Magmos API → MongoDB) ───────────────────
+  const keysQuery = useQuery<ApiKeyRecord[]>({
+    queryKey: ["apiKeys", address],
+    enabled: !!address,
+    queryFn: () => api.listKeys(address!),
+  });
+  const keys = keysQuery.data ?? [];
   const [createOpen, setCreateOpen] = useState(false);
+  const [creating, setCreating] = useState(false);
   const [newName, setNewName] = useState("");
-  const [reveal, setReveal] = useState<ApiKey | null>(null);
-  const [revokeTarget, setRevokeTarget] = useState<ApiKey | null>(null);
+  const [reveal, setReveal] = useState<ApiKeyRecord | null>(null);
+  const [revokeTarget, setRevokeTarget] = useState<ApiKeyRecord | null>(null);
 
-  function createKey() {
-    const name = newName.trim() || "Untitled key";
-    const { prefix, secret } = genKey();
-    const key: ApiKey = {
-      id: `k_${prefix}`,
-      name,
-      prefix,
-      secret,
-      created: "Just now",
-    };
-    setKeys((k) => [key, ...k]);
-    setCreateOpen(false);
-    setNewName("");
-    setReveal(key);
+  async function createKey() {
+    if (!address) return;
+    setCreating(true);
+    try {
+      const key = await api.createKey(address, newName.trim() || "Untitled key");
+      await keysQuery.refetch();
+      setCreateOpen(false);
+      setNewName("");
+      setReveal(key); // key.secret is present exactly once
+    } catch {
+      toast.error("Could not create key");
+    } finally {
+      setCreating(false);
+    }
   }
 
   // ── Treasury yield (real MagmosYieldVault, ERC-4626) ────────────────────
@@ -243,7 +247,7 @@ export default function ApiKeysPage() {
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <span className="text-[12.5px] text-[var(--sw-text-dim)]">{k.created}</span>
+                <span className="text-[12.5px] text-[var(--sw-text-dim)]">{fmtCreated(k.createdAt)}</span>
                 <button
                   type="button"
                   onClick={() => setRevokeTarget(k)}
@@ -256,7 +260,9 @@ export default function ApiKeysPage() {
             </div>
           ))}
           {keys.length === 0 && (
-            <p className="py-8 text-center text-[13px] text-[var(--sw-text-muted)]">No API keys yet.</p>
+            <p className="py-8 text-center text-[13px] text-[var(--sw-text-muted)]">
+              {keysQuery.isLoading ? "Loading…" : "No API keys yet — create your first one."}
+            </p>
           )}
         </div>
       </SweemCard>
@@ -278,7 +284,7 @@ export default function ApiKeysPage() {
         footer={
           <>
             <ActionButton onClick={() => setCreateOpen(false)}>Cancel</ActionButton>
-            <ActionButton variant="primary" onClick={createKey}>Create key</ActionButton>
+            <ActionButton variant="primary" disabled={creating} onClick={createKey}>{creating ? "Creating…" : "Create key"}</ActionButton>
           </>
         }
       >
@@ -327,10 +333,16 @@ export default function ApiKeysPage() {
             <ActionButton onClick={() => setRevokeTarget(null)}>Cancel</ActionButton>
             <ActionButton
               variant="primary"
-              onClick={() => {
-                setKeys((k) => k.filter((x) => x.id !== revokeTarget?.id));
+              onClick={async () => {
+                if (!address || !revokeTarget) return;
+                try {
+                  await api.revokeKey(address, revokeTarget.id);
+                  await keysQuery.refetch();
+                  toast.success("Key revoked");
+                } catch {
+                  toast.error("Could not revoke key");
+                }
                 setRevokeTarget(null);
-                toast.success("Key revoked");
               }}
             >
               Revoke

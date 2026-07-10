@@ -37,4 +37,5 @@ export const COLLECTIONS = {
   groups: 'groups',
   invoices: 'invoices',
   apiKeys: 'apiKeys',
+  webhooks: 'webhooks',
 } as const

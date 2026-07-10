@@ -63,6 +63,35 @@ export interface BulkResult {
   skipped: { walletAddress: string; reason: string }[]
 }
 
+export interface Invoice {
+  id: string
+  orgWallet: string
+  recipient: { name: string; address: string }
+  amount: number
+  status: 'pending' | 'paid' | 'overdue'
+  issuedDate: string
+  dueDate: string
+  txHash?: string | null
+  createdAt?: string
+}
+
+export interface ApiKeyRecord {
+  id: string
+  name: string
+  prefix: string
+  createdAt: string
+  secret?: string // present only in the create response, once
+}
+
+export interface Webhook {
+  id: string
+  url: string
+  events?: string[]
+  secretPrefix?: string
+  createdAt: string
+  secret?: string // present only in the create response, once
+}
+
 export function useSweemApi() {
   const { address } = useAccount()
   const { signMessageAsync } = useSignMessage()
@@ -181,6 +210,39 @@ export function useSweemApi() {
 
     // ----- pools (chain read) -----
     listPools: (w: string) => get<Pool[]>(`/api/orgs/${w.toLowerCase()}/pools`),
+
+    // ----- invoices -----
+    listInvoices: (w: string) => get<Invoice[]>(`/api/orgs/${w.toLowerCase()}/invoices`),
+    createInvoice: async (
+      w: string,
+      input: { name: string; address: string; amount: number; dueDate?: string }
+    ): Promise<Invoice> => {
+      const { data } = await authedFetch(`/api/orgs/${w.toLowerCase()}/invoices`, 'POST', input)
+      return data as Invoice
+    },
+    updateInvoice: (w: string, id: string, patch: { status?: string; txHash?: string }) =>
+      authedFetch(`/api/orgs/${w.toLowerCase()}/invoices`, 'PATCH', { id, ...patch }),
+
+    // ----- api keys -----
+    listKeys: (w: string) => get<ApiKeyRecord[]>(`/api/orgs/${w.toLowerCase()}/keys`),
+    createKey: async (w: string, name: string): Promise<ApiKeyRecord> => {
+      const { data } = await authedFetch(`/api/orgs/${w.toLowerCase()}/keys`, 'POST', { name })
+      return data as ApiKeyRecord
+    },
+    revokeKey: (w: string, id: string) =>
+      authedFetch(`/api/orgs/${w.toLowerCase()}/keys?id=${encodeURIComponent(id)}`, 'DELETE'),
+
+    // ----- webhooks -----
+    listWebhooks: (w: string) => get<Webhook[]>(`/api/orgs/${w.toLowerCase()}/webhooks`),
+    createWebhook: async (
+      w: string,
+      input: { url: string; events?: string[] }
+    ): Promise<Webhook> => {
+      const { data } = await authedFetch(`/api/orgs/${w.toLowerCase()}/webhooks`, 'POST', input)
+      return data as Webhook
+    },
+    deleteWebhook: (w: string, id: string) =>
+      authedFetch(`/api/orgs/${w.toLowerCase()}/webhooks?id=${encodeURIComponent(id)}`, 'DELETE'),
 
     // Best-effort org-name lookup (never throws) for lightweight display.
     getOrgName: async (orgWallet: string): Promise<string | null> => {
