@@ -4,3 +4,9 @@ playwright-report/
 .cache-synpress/
 *.mov
 *.mp4
+
+# recordings / artifacts
+*.webm
+video/
+renders/
+frames/
