@@ -1,0 +1,14 @@
+{
+  "name": "magmos-demo-recording",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:cache": "synpress wallet-setup",
+    "record": "playwright test --headed",
+    "record:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@synthetixio/synpress": "^4.1.0"
+  }
+}
