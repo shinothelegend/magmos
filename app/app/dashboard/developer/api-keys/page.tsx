@@ -123,7 +123,7 @@ export default function ApiKeysPage() {
         args: [amtRaw, address],
       });
       toast.success(`Deposited ${amt.toLocaleString()} USDC to treasury`, {
-        description: "View on Arcscan",
+        description: `Tx ${hash.slice(0, 12)}…${hash.slice(-10)}`,
         action: { label: "Receipt", onClick: () => window.open(EXPLORER_TX(hash), "_blank") },
       });
       await waitForTransactionReceipt(wagmiConfig, { hash });
@@ -151,7 +151,7 @@ export default function ApiKeysPage() {
         args: [sh, address, address],
       });
       toast.success("Withdrew treasury position", {
-        description: "View on Arcscan",
+        description: `Tx ${hash.slice(0, 12)}…${hash.slice(-10)}`,
         action: { label: "Receipt", onClick: () => window.open(EXPLORER_TX(hash), "_blank") },
       });
       await waitForTransactionReceipt(wagmiConfig, { hash });

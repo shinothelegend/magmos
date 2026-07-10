@@ -93,7 +93,7 @@ export function InvoicesScreen() {
         args: [inv.recipient.address as `0x${string}`, toRaw(token, inv.amount)],
       });
       toast.success(`Paid ${inv.amount.toLocaleString()} USDC to ${inv.recipient.name}`, {
-        description: "View on Arcscan",
+        description: `Tx ${hash.slice(0, 12)}…${hash.slice(-10)}`,
         action: { label: "Receipt", onClick: () => window.open(EXPLORER_TX(hash), "_blank") },
       });
       await waitForTransactionReceipt(wagmiConfig, { hash });

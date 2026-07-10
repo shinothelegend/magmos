@@ -10,3 +10,14 @@ playwright-report/
 video/
 renders/
 frames/
+
+# demo video artifacts (regenerable)
+narration/
+cards/
+final-frames/
+frames/
+work/
+video-org/
+video-emp/
+*.wav
+marks-*.json

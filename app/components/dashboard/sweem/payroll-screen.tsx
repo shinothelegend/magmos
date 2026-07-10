@@ -110,7 +110,7 @@ export function PayrollScreen() {
     try {
       const hash = await writeContractAsync(build());
       toast.success(`${kind} submitted`, {
-        description: "View on Arcscan",
+        description: `Tx ${hash.slice(0, 12)}…${hash.slice(-10)}`,
         action: { label: "Receipt", onClick: () => window.open(EXPLORER_TX(hash), "_blank") },
       });
       await waitForTransactionReceipt(wagmiConfig, { hash });
@@ -136,7 +136,7 @@ export function PayrollScreen() {
       await waitForTransactionReceipt(wagmiConfig, { hash: approveHash });
       const hash = await writeContractAsync(topup(poolId, amount));
       toast.success(`Topped up ${amt.toLocaleString()} USDC`, {
-        description: "View on Arcscan",
+        description: `Tx ${hash.slice(0, 12)}…${hash.slice(-10)}`,
         action: { label: "Receipt", onClick: () => window.open(EXPLORER_TX(hash), "_blank") },
       });
       await waitForTransactionReceipt(wagmiConfig, { hash });
