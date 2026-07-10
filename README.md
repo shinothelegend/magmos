@@ -9,7 +9,7 @@ Stream USDC to anyone in the world, settled per second. Claim anytime. Bridge ho
 
 <p align="center">
 Built for the <b>Stablecoin Commerce Stack Challenge</b> — Track 1: Best Cross-Border Payments & Remittances Experience (UAE → Global).<br/>
-🟢 <a href="https://magmos.vercel.app"><b>Live app → magmos.vercel.app</b></a> · <b>HashKey testnet</b> chain 133 · <a href="https://testnet-explorer.hsk.xyz">HashKey Explorer</a>
+🟢· <b>HashKey testnet</b> chain 133 · <a href="https://testnet-explorer.hsk.xyz">HashKey Explorer</a>
 </p>
 
 ---
