@@ -9,6 +9,10 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.49.0",
-    "@synthetixio/synpress": "^4.1.0"
+    "@synthetixio/synpress": "^4.1.0",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "viem": "^2.55.0"
   }
 }
