@@ -10,7 +10,7 @@ export interface MagmosPayButtonProps
   children?: ReactNode;
   className?: string;
   style?: CSSProperties;
-  /** Arc network to connect to. Defaults to testnet. */
+  /** HashKey Chain network to connect to. Defaults to testnet. */
   network?: MagmosNetwork;
   /** Render your own trigger instead of the default button. */
   render?: (open: () => void) => ReactNode;

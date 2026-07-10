@@ -1,4 +1,4 @@
-// Magmos on Arc — chain constants, deployed addresses, token config, and ABIs.
+// Magmos on HashKey Chain — chain constants, deployed addresses, token config, and ABIs.
 // Single source of truth for the chain layer (replaces the Sui-era lib/sweem.ts).
 
 import type { Abi } from 'viem'
@@ -8,40 +8,40 @@ import registryAbi from './abi/MagmosRegistry.json'
 import vaultAbi from './abi/MagmosVault.json'
 import yieldVaultAbi from './abi/MagmosYieldVault.json'
 
-export const NETWORK = 'arc-testnet' as const
+export const NETWORK = 'hashkey-testnet' as const
 
-// ----- Arc testnet chain -----
-export const ARC_CHAIN_ID = 5042002
-export const ARC_RPC_URL = process.env.NEXT_PUBLIC_ARC_RPC || 'https://rpc.testnet.arc.network'
-export const ARC_WS_URL = 'wss://rpc.testnet.arc.network'
-export const ARC_EXPLORER = 'https://testnet.arcscan.app'
+// ----- HashKey testnet chain -----
+export const HASHKEY_CHAIN_ID = 133
+export const HASHKEY_RPC_URL = process.env.NEXT_PUBLIC_HASHKEY_RPC || 'https://hashkey-chain-testnet.rpc.thirdweb.com'
+export const HASHKEY_WS_URL = 'wss://hashkey-chain-testnet.rpc.thirdweb.com' // thirdweb ws fallback
+export const HASHKEY_EXPLORER = 'https://testnet-explorer.hsk.xyz'
 export const MULTICALL3 = '0xcA11bde05977b3631167028862bE2a173976CA11' as const
 
-// ----- Deployed Magmos core (Arc testnet) -----
+// ----- Deployed Magmos core (HashKey testnet) -----
 export const MAGMOS_PAYROLL = (process.env.NEXT_PUBLIC_MAGMOS_PAYROLL ||
-  '0xc810cabdCb4b22df29A54bdb0E124EE3ABA46093') as `0x${string}`
+  '0x5F7e31d28011b14faA202D96534979E5b068287c') as `0x${string}`
 export const MAGMOS_REGISTRY = (process.env.NEXT_PUBLIC_MAGMOS_REGISTRY ||
-  '0x9C73E54e78c0e1d5C46aC996A126Ba5B9d4fC501') as `0x${string}`
+  '0x490f92844481aB42EA00f8896672E8ca007c780a') as `0x${string}`
 export const MAGMOS_VAULT = (process.env.NEXT_PUBLIC_MAGMOS_VAULT ||
-  '0x9F4AeADcc5C21ACB1dC96C66947E4373C6abF322') as `0x${string}`
+  '0xAE97B9Ba6AAAB15FFbd76d636d52d8D93A8858F0') as `0x${string}`
 // Treasury yield vault ("payroll that pays for itself") — ERC-4626 over USDC. Testnet yield
 // rail; routes to USYC in production.
 export const MAGMOS_YIELD_VAULT = (process.env.NEXT_PUBLIC_MAGMOS_YIELD ||
-  '0x3e711d38FFC65C278Fe78eC981bc5cEC5807D0c2') as `0x${string}`
+  '0xa21DceeaD63d7CD13f09d03ff2541ca84a4572D2') as `0x${string}`
 
 export const PAYROLL_ABI = payrollAbi as Abi
 export const REGISTRY_ABI = registryAbi as Abi
 export const VAULT_ABI = vaultAbi as Abi
 export const YIELD_VAULT_ABI = yieldVaultAbi as Abi
 
-// ----- Arc testnet tokens -----
+// ----- HashKey testnet tokens -----
 export const USDC = (process.env.NEXT_PUBLIC_USDC ||
-  '0x3248CcD4c276b4785f81f8c1207094262F67a33C') as `0x${string}`
+  '0x0000000000000000000000000000000000000000') as `0x${string}`
 export const USDC_DECIMALS = 6
 export const USYC = '0xe9185F0c5F296Ed1797AaE4238D26CCaBEadb86C' as `0x${string}`
 export const EURC = '0x89B50855Aa3bE2F677cD6303Cec089B5F319D72a' as `0x${string}`
 
-// ----- Circle CCTP v2 on Arc (domain 26) — recipient "send home" bridge (Phase 3) -----
+// ----- Circle CCTP v2 on HashKey (domain 26 stub) — recipient "send home" bridge (Phase 3) -----
 export const ARC_CCTP_DOMAIN = 26
 export const CCTP_TOKEN_MESSENGER = '0x8FE6B999Dc680CcFDD5Bf7EB0974218be2542DAA' as `0x${string}`
 export const CCTP_MESSAGE_TRANSMITTER =
@@ -56,8 +56,8 @@ export const MONTH_S = 2_592_000 // 30 days — default stream rate period
 
 export const API_BASE = process.env.NEXT_PUBLIC_API_BASE || ''
 
-export const EXPLORER_TX = (hash: string) => `${ARC_EXPLORER}/tx/${hash}`
-export const EXPLORER_ADDR = (addr: string) => `${ARC_EXPLORER}/address/${addr}`
+export const EXPLORER_TX = (hash: string) => `${HASHKEY_EXPLORER}/tx/${hash}`
+export const EXPLORER_ADDR = (addr: string) => `${HASHKEY_EXPLORER}/address/${addr}`
 
 // poolId = keccak256(abi.encode(org, token)) — must match MagmosPayroll.poolIdFor.
 export function poolIdFor(org: `0x${string}`, token: `0x${string}`): `0x${string}` {

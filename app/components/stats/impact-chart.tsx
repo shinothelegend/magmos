@@ -73,7 +73,7 @@ export function ImpactChart() {
       </svg>
 
       <p className="mt-4 text-[12px] leading-[1.6] text-text-secondary">
-        USDC accrues to recipients worldwide every second on Arc — claimable the moment it lands, bridged home via CCTP.
+        USDC accrues to recipients worldwide every second on HashKey Chain — claimable the moment it lands, bridged home via CCTP.
       </p>
     </div>
   );

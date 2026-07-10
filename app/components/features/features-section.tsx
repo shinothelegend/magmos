@@ -20,9 +20,9 @@ const rowOne = [
     id: "instant-transfers",
     tag: "Cross-border",
     lead: "Reach anyone, anywhere",
-    rest: "Stream USDC to recipients across the globe, settled per second on Arc.",
+    rest: "Stream USDC to recipients across the globe, settled per second on HashKey Chain.",
     image: "/assets/2.png",
-    imageAlt: "USDC payouts streaming to recipients around the world on Arc",
+    imageAlt: "USDC payouts streaming to recipients around the world on HashKey Chain",
   },
 ];
 
@@ -47,7 +47,7 @@ const rowTwo = [
     id: "security",
     tag: "Security",
     lead: "Your keys, your payroll",
-    rest: "Wallet-signed and non-custodial, settled on Arc.",
+    rest: "Wallet-signed and non-custodial, settled on HashKey Chain.",
     image: "/assets/5.png",
     imageAlt: "Non-custodial payroll secured by wallet signatures",
   },
@@ -69,7 +69,7 @@ export function FeaturesSection() {
         eyebrow="Core Features"
         eyebrowIcon={<BoltIcon />}
         title="Global payroll, zero overhead"
-        description="Everything you need to run cross-border payroll that streams, settles, and stays under your control — all in USDC on Arc."
+        description="Everything you need to run cross-border payroll that streams, settles, and stays under your control — all in USDC on HashKey Chain."
       />
 
       <div className="grid gap-6 lg:grid-cols-2">

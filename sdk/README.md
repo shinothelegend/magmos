@@ -1,6 +1,6 @@
 # @magmos/sdk
 
-A drop in crypto checkout component for React. Accept USDC and USDC payments on the Arc network with a single component. Magmos handles wallet connection, the on chain transfer, and the confirmation experience, so you can collect payments without writing any blockchain code.
+A drop in crypto checkout component for React. Accept USDC and USDC payments on the HashKey Chain network with a single component. Magmos handles wallet connection, the on chain transfer, and the confirmation experience, so you can collect payments without writing any blockchain code.
 
 ## Overview
 
@@ -53,7 +53,7 @@ export function Checkout() {
 | `apiKey` | `string` | Yes | Your publishable key. |
 | `amount` | `number` | Yes | The amount to charge, expressed in whole token units. |
 | `token` | `"USDC" \| "USDC"` | No | Lock the payment to a single token. Omit to let the customer choose. |
-| `network` | `"mainnet" \| "testnet" \| "devnet"` | No | The Arc network to use. Defaults to `mainnet`. |
+| `network` | `"mainnet" \| "testnet" \| "devnet"` | No | The HashKey Chain network to use. Defaults to `mainnet`. |
 | `onSuccess` | `(result: PaymentResult) => void` | No | Called with the transaction hash after a confirmed payment. |
 | `onError` | `(error: Error) => void` | No | Called when a payment fails. |
 | `render` | `(open: () => void) => ReactNode` | No | Render a custom trigger instead of the default button. |
@@ -105,7 +105,7 @@ To test the flow before configuring a key, pass `recipient` (and optionally `mer
 
 ## How payments settle
 
-The customer's wallet transfers the selected token to the receiving address associated with your API key. Settlement happens directly on the Arc network. The `onSuccess` callback returns the transaction hash, which can be viewed on arcscan at `https://testnet.arcscan.app/tx/<digest>`.
+The customer's wallet transfers the selected token to the receiving address associated with your API key. Settlement happens directly on the HashKey Chain network. The `onSuccess` callback returns the transaction hash, which can be viewed on arcscan at `https://testnet.arcscan.app/tx/<digest>`.
 
 ## TypeScript
 

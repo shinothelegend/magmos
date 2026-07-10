@@ -23,10 +23,10 @@ const poppins = Poppins({
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://magmos.xyz";
-const TITLE = "Magmos | Real-time Cross-Border Payroll on Arc";
+const TITLE = "Magmos | Real-time Cross-Border Payroll on HashKey Chain";
 const TITLE_TEMPLATE = "%s | Magmos";
 const OG_DESC =
-  "Magmos streams USDC salaries and contractor payouts to recipients worldwide, settled per second on Arc — Circle's stablecoin L1. Fund once, pay continuously, claim anytime, bridge home via CCTP.";
+  "Magmos streams USDC salaries and contractor payouts to recipients worldwide, settled per second on HashKey Chain. Fund once, pay continuously, claim anytime, bridge home via CCTP.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     "cross-border payments",
     "stablecoin remittances",
     "USDC payroll",
-    "Arc blockchain",
+    "HashKey Chain",
     "Circle",
     "CCTP",
     "global payroll",
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     title: TITLE,
     description: OG_DESC,
-    images: [{ url: "/sweem-thumbnail.png", width: 1920, height: 1080, alt: "Magmos — real-time cross-border payroll on Arc" }],
+    images: [{ url: "/sweem-thumbnail.png", width: 1920, height: 1080, alt: "Magmos — real-time cross-border payroll on HashKey Chain" }],
   },
   twitter: {
     card: "summary_large_image",

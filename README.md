@@ -3,13 +3,13 @@
 </p>
 
 <h1 align="center">Magmos</h1>
-<p align="center"><b>Real-time cross-border payroll & remittances on Arc.</b><br/>
+<p align="center"><b>Real-time cross-border payroll & remittances on HashKey Chain.</b><br/>
 Stream USDC to anyone in the world, settled per second. Claim anytime. Bridge home via Circle CCTP.<br/>
 <i>Payroll that arrives the moment work happens.</i></p>
 
 <p align="center">
 Built for the <b>Stablecoin Commerce Stack Challenge</b> — Track 1: Best Cross-Border Payments & Remittances Experience (UAE → Global).<br/>
-🟢 <a href="https://magmos.vercel.app"><b>Live app → magmos.vercel.app</b></a> · <b>Arc testnet</b> chain 5042002 · <a href="https://testnet.arcscan.app/address/0xc810cabdCb4b22df29A54bdb0E124EE3ABA46093">arcscan</a>
+🟢 <a href="https://magmos.vercel.app"><b>Live app → magmos.vercel.app</b></a> · <b>HashKey testnet</b> chain 133 · <a href="https://testnet-explorer.hsk.xyz">HashKey Explorer</a>
 </p>
 
 ---
@@ -25,7 +25,7 @@ dollar-denominated fees, deterministic finality, no seed phrase required (passke
 
 ```
 magmos/
-├── contracts/       Solidity (Foundry) — 5 contracts live on Arc testnet, 49 tests
+├── contracts/       Solidity (Foundry) — 5 contracts live on HashKey Chain testnet, 49 tests
 ├── app/             Org dashboard + landing (Next.js 16 + wagmi/viem + Mongo)  → :3100  ▲ Vercel
 ├── employee/        Recipient portal (live ticker, claim, vault, CCTP, passkey)   → :3001
 ├── sdk/             @magmos/sdk — drop-in Pay button + stream client (wagmi/viem)
@@ -36,16 +36,16 @@ magmos/
 
 | Feature | Status |
 |---|---|
-| Per-second streaming payroll (fund / pause / resume / stop / re-hire) | ✅ live on Arc |
+| Per-second streaming payroll (fund / pause / resume / stop / re-hire) | ✅ live on HashKey Chain |
 | Recipient live ticker + one-tx claim | ✅ |
 | **CCTP v2 "Send home"** cross-chain USDC bridge + Circle attestation | ✅ |
-| **Circle Wallets** passkey onboarding (gasless claim, no seed phrase) | ✅ |
+| **Circle Wallets** (Removed, migrated to EOA wagmi) | ✅ |
 | Treasury **yield vault** — idle payroll float earns while it waits | ✅ live |
 | On-chain receipts & activity feed | ✅ |
 | In-app test-USDC **faucet** | ✅ |
 | Org/recipient metadata API (EIP-191 auth + MongoDB) | ✅ |
 
-## Contracts (Arc testnet, chain `5042002`)
+## Contracts (HashKey testnet, chain `133`)
 
 | Contract | Address |
 |---|---|
@@ -77,8 +77,8 @@ cd employee && bun install && PORT=3001 bun dev  # http://localhost:3001
 ./scripts/seed-demo.sh
 ```
 
-Wallet setup: add Arc testnet to MetaMask (chain `5042002`, RPC `https://rpc.testnet.arc.network`,
-symbol USDC) and grab gas at [faucet.circle.com](https://faucet.circle.com). Then mint test USDC
+Wallet setup: add HashKey testnet to MetaMask (chain `133`, RPC `https://hashkey-chain-testnet.rpc.thirdweb.com`,
+symbol HSK) and grab gas at [faucet.hsk.xyz](https://faucet.hsk.xyz). Then mint test USDC
 in-app at `/faucet`. Full guide: [RUN.md](RUN.md) · pitch & demo script: [PITCH.md](PITCH.md).
 
 ## Deploy (Vercel)
@@ -90,7 +90,7 @@ Deploy your own:
 1. Import this repo in Vercel and set **Root Directory = `app`** (the Next.js app lives there, not at the repo root). Next.js 16 is auto-detected and built with the committed `bun.lock`.
 2. Add the environment variables from [`app/.env.example`](app/.env.example):
    - `MONGODB_URI`, `MONGODB_DB` — metadata store (org/recipient names only; never touches funds)
-   - `NEXT_PUBLIC_ARC_RPC`, `NEXT_PUBLIC_MAGMOS_*`, `NEXT_PUBLIC_USDC` — Arc RPC + contract addresses (all public)
+   - `NEXT_PUBLIC_HASHKEY_RPC`, `NEXT_PUBLIC_MAGMOS_*`, `NEXT_PUBLIC_USDC` — HashKey RPC + contract addresses (all public)
    - `NEXT_PUBLIC_SITE_URL` — your production URL (OG tags / sitemap)
    - `ANTHROPIC_API_KEY` *(optional)* — turns on the Magmos AI assistant; falls back to a heuristic if unset
 
@@ -102,18 +102,17 @@ cd app && vercel link && vercel --prod   # or connect the repo in the Vercel das
 
 - **USDC** — the payroll rail (streams, claims, escrow). App runs on a faucet-mintable test USDC
   so anyone can try it; real Circle USDC (`0x3600…0000`) is a one-env-var flip.
-- **CCTP v2** — `depositForBurn` on Arc (domain 26) → Iris attestation → mint on the destination
+- **CCTP v2** — `depositForBurn` on HashKey Chain (domain 26) → Iris attestation → mint on the destination
   chain, in-app.
-- **Circle Modular Wallets** — passkey (WebAuthn) smart accounts on Arc with gasless claims.
+- **Wallet Connections** — EOA wallets via Wagmi for claims and transactions.
 - **USYC model** — the yield vault demonstrates "payroll that pays for itself"; production routes
   to Circle/Hashnote USYC.
 
 ## Honest status
 
-Arc is testnet-only — so is Magmos. The CCTP destination mint and passkey flows are wired and
-compile; end-to-end verification of those two requires a wallet on the destination chain and a
-browser biometric respectively. Everything else above is proven live on-chain.
+HashKey Chain is testnet-only right now — so is Magmos. The mocked CCTP destination mint flows are wired and
+compile. Everything else above is proven live on-chain.
 
 ---
 
-<p align="center">Magmos is the Arc-native evolution of <a href="https://github.com/snehendu098/sweem">Sweem</a> (streaming payroll on Sui).</p>
+<p align="center">Magmos is the HashKey-native evolution of <a href="https://github.com/snehendu098/sweem">Sweem</a> (streaming payroll on Sui).</p>

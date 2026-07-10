@@ -166,7 +166,7 @@ export default function ApiKeysPage() {
 
   const snippet = useMemo(
     () =>
-      `import { Magmos } from "@magmos/sdk";\n\nconst magmos = new Magmos({ apiKey: process.env.MAGMOS_API_KEY });\n\n// Stream USDC payroll on Arc\nawait magmos.streams.create({\n  recipient: "0x…",\n  monthlyUsdc: 4000,\n});`,
+      `import { Magmos } from "@magmos/sdk";\n\nconst magmos = new Magmos({ apiKey: process.env.MAGMOS_API_KEY });\n\n// Stream USDC payroll on HashKey Chain\nawait magmos.streams.create({\n  recipient: "0x…",\n  monthlyUsdc: 4000,\n});`,
     []
   );
 

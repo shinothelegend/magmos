@@ -2,7 +2,7 @@
 
 Records a live product demo with **real MetaMask signature popups** on camera.
 Synpress drives a real MetaMask in headed Chromium and clicks Confirm for you;
-every transaction is real on Arc testnet (verifiable on arcscan).
+every transaction is real on HashKey Chain testnet (verifiable on arcscan).
 
 > Runs **headed on your Mac** — MetaMask popups can't be captured headless.
 > You just start a screen recording and watch it drive itself (~90s).
@@ -14,7 +14,7 @@ cd magmos/demo-recording
 npm install                      # already done
 npx playwright install chromium  # browser binary, if not present
 
-# Build the MetaMask cache: imports the Arc network + your funded deployer account.
+# Build the MetaMask cache: imports the HashKey Chain network + your funded deployer account.
 # Get the key from magmos/contracts/.env.deployer (starts with 0x). It is only read
 # from the env var — never written to disk here, never committed.
 DEMO_PK=0x<your-deployer-private-key> npm run build:cache

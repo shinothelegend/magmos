@@ -1,18 +1,18 @@
 # Magmos — Pitch & Demo Kit
 
-**Real-time cross-border payroll & remittances on Arc.**
+**Real-time cross-border payroll & remittances on HashKey Chain.**
 A business streams USDC to workers anywhere in the world, settled *per second*, claimed anytime,
 and bridged home via Circle CCTP. Payroll that arrives the moment work happens.
 
 Built for the **Stablecoin Commerce Stack Challenge** — Track 1: *Best Cross-Border Payments &
-Remittances Experience (UAE → Global)*. Live on Arc testnet.
+Remittances Experience (UAE → Global)*. Live on HashKey Chain testnet.
 
 ---
 
 ## The one-liner (say this first)
 > "SWIFT takes 3 days and 6%. Magmos takes one second and cents — a UAE business streams USDC
 > to a creator in Manila, Lagos, or Karachi who watches their pay tick up live, claims it, and
-> bridges it home. It's running on Arc today, with the full Circle stack."
+> bridges it home. It's running on HashKey Chain today, with the full Circle stack."
 
 ## The problem
 - Cross-border payroll is **slow, opaque, and expensive.** The UAE is one of the world's biggest
@@ -24,7 +24,7 @@ Remittances Experience (UAE → Global)*. Live on Arc testnet.
   yield, no per-second transparency.
 
 ## The solution
-Magmos turns payroll into a **continuous stream** on Arc (Circle's USDC-native L1):
+Magmos turns payroll into a **continuous stream** on HashKey Chain (Circle's USDC-native L1):
 1. A business funds a USDC pool once and streams to any number of recipients, per second.
 2. Recipients watch their balance **accrue live** and claim anytime — no invoices, no waiting.
 3. Recipients **bridge claimed USDC home** via Circle CCTP, save it to a vault, or onboard with a
@@ -52,7 +52,7 @@ Magmos turns payroll into a **continuous stream** on Arc (Circle's USDC-native L
 ---
 
 ## What's actually built & working (be specific, it's a strength)
-- **5 contracts live on Arc testnet, 49 passing tests** (unit + fuzz + integration + a
+- **5 contracts live on HashKey Chain testnet, 49 passing tests** (unit + fuzz + integration + a
   reentrancy-attack test), **independently audited (3-agent review) with every finding fixed and
   redeployed.**
   - MagmosPayroll `0xc810cabdCb4b22df29A54bdb0E124EE3ABA46093`
@@ -66,7 +66,7 @@ Magmos turns payroll into a **continuous stream** on Arc (Circle's USDC-native L
 - **Two premium Next.js apps** (sender dashboard + recipient portal) on wagmi/viem, chain-first,
   with a live per-second ticker, a treasury **yield page** (deposit idle USDC → grows at 5% APY,
   proven on-chain), a **faucet**, and a **Circle passkey** onboarding page.
-- **CCTP v2 "send home" — the FULL loop, in-app**: approve + `depositForBurn` on Arc → Circle
+- **CCTP v2 "send home" — the FULL loop, in-app**: approve + `depositForBurn` on HashKey Chain → Circle
   Iris attestation → the wallet switches to the destination chain (Sepolia / Fuji / Arbitrum /
   Base) and mints via `receiveMessage`, with a destination-explorer receipt. Both the
   `depositForBurn` and `receiveMessage` signatures verified against Circle docs *and* the
@@ -100,12 +100,12 @@ Judges trust teams who are precise about what's done vs. next. Ours:
    USDC lands in ~a second (show the arcscan tx). *"No invoice. No 3-day wait. No 6% haircut."*
 5. **Send home + passkey.** Bridge via **CCTP** ("earned in Dubai, spendable at home") and show
    the **passkey** onboarding ("get paid with Face ID — no seed phrase").
-6. **Close.** *"Real-time, dollar-denominated, on Circle's stack. Live on Arc today."*
+6. **Close.** *"Real-time, dollar-denominated, on Circle's stack. Live on HashKey Chain today."*
 
 ## Positioning taglines (pick per audience)
 - Consumer/remittance: **"Your pay, arriving every second."**
 - B2B/marketplace: **"Settle with the world in real time."**
-- Investor/judge: **"Stripe-grade payout rails, stablecoin-native, on Arc."**
+- Investor/judge: **"Stripe-grade payout rails, stablecoin-native, on HashKey Chain."**
 
 ## Market
 UAE outbound remittances are a top global corridor; global freelance/creator payouts and

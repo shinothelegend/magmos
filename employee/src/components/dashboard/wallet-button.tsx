@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useAccount, useConnect, useDisconnect, useSwitchChain } from "wagmi";
 import { toast } from "sonner";
-import { ARC_CHAIN_ID } from "@/lib/magmos";
+import { HASHKEY_CHAIN_ID } from "@/lib/magmos";
 
 function shortAddr(a: string) {
   return `${a.slice(0, 6)}…${a.slice(-4)}`;
@@ -30,17 +30,17 @@ export function WalletButton() {
       }
     };
 
-    const wrongChain = chainId !== ARC_CHAIN_ID;
+    const wrongChain = chainId !== HASHKEY_CHAIN_ID;
 
     return (
       <div className="flex h-9 items-center gap-1.5 rounded-full border border-[var(--sw-border)] bg-[var(--sw-card)] pl-2.5 pr-1">
         {wrongChain ? (
           <button
-            onClick={() => switchChain({ chainId: ARC_CHAIN_ID })}
+            onClick={() => switchChain({ chainId: HASHKEY_CHAIN_ID })}
             type="button"
             className="rounded-full px-2 py-1 text-[12px] font-semibold text-[#ff794b] transition-colors hover:text-[#ff9a75]"
           >
-            Switch to Arc
+            Switch to HashKey Chain
           </button>
         ) : (
           <button

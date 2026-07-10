@@ -45,7 +45,7 @@ export function CtaSection() {
           <div className="relative z-10">
             <p className="inline-flex items-center gap-2 text-[12px] font-medium text-[#0b1e05]/70">
               <span className="size-1.5 rounded-full bg-[#0b1e05]/70" />
-              Live on Arc testnet
+              Live on HashKey Chain testnet
             </p>
             <h2 className="mx-auto mt-3 text-[clamp(28px,4vw,42px)] font-medium leading-[1.1] tracking-[-0.02em]">
               Pay the world,
@@ -53,7 +53,7 @@ export function CtaSection() {
               every second.
             </h2>
             <p className="mx-auto mt-4 max-w-none text-[13px] leading-6 text-[#0b1e05]/75 sm:whitespace-nowrap">
-              Fund a USDC pool, stream payouts by the second on Arc, and let anyone cash out home via CCTP.
+              Fund a USDC pool, stream payouts by the second on HashKey Chain, and let anyone cash out home via CCTP.
             </p>
             <LaunchAppButton className="mt-7 inline-flex h-10 items-center gap-2 rounded-full bg-[#0a0e16] px-7 text-[13px] font-medium text-white transition-opacity hover:opacity-90">
               Launch Dashboard

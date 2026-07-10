@@ -34,7 +34,7 @@ export function HeroSection() {
         </h1>
 
         <p className="mt-5 max-w-[470px] text-[14px] leading-6 text-white/70 md:text-[15px]">
-          Stream USDC to anyone, anywhere — settled per second on Arc,
+          Stream USDC to anyone, anywhere — settled per second on HashKey Chain,
           claimed anytime, bridged home via Circle CCTP.
         </p>
 

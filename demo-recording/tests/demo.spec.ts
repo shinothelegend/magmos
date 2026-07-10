@@ -8,7 +8,7 @@ const test = testWithSynpress(metaMaskFixtures(setup))
 
 const ORG = 'http://localhost:3100'
 
-test('Magmos demo — fund real-time payroll on Arc (real signatures)', async ({
+test('Magmos demo — fund real-time payroll on HashKey Chain (real signatures)', async ({
   context,
   page,
   metamaskPage,
@@ -16,7 +16,7 @@ test('Magmos demo — fund real-time payroll on Arc (real signatures)', async ({
 }) => {
   const metamask = new MetaMask(context, metamaskPage, walletPassword, extensionId)
 
-  // Make sure MetaMask is on Arc and using the funded deployer account.
+  // Make sure MetaMask is on HashKey Chain and using the funded deployer account.
   await metamask.switchNetwork('Arc Testnet').catch(() => {})
 
   // ── 1. Land + connect ────────────────────────────────────────────────────
@@ -25,7 +25,7 @@ test('Magmos demo — fund real-time payroll on Arc (real signatures)', async ({
   await page.getByText('Launch Dashboard', { exact: false }).first().click()
   // Real MetaMask "Connect" popup → approve.
   await metamask.connectToDapp()
-  // If the app requests a network switch, approve it (no-op if already on Arc).
+  // If the app requests a network switch, approve it (no-op if already on HashKey Chain).
   await metamask.approveSwitchNetwork().catch(() => {})
   await page.waitForTimeout(3000)
 

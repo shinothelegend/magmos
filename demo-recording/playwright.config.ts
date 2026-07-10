@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test'
 
-// Headed, single-worker, long timeouts (real Arc testnet txns take a few seconds).
+// Headed, single-worker, long timeouts (real HashKey testnet txns take a few seconds).
 // Video: 'on' asks Playwright to record; because Synpress runs a persistent context
 // with the MetaMask extension, if no video lands in test-results/ use the macOS
 // screen recording fallback (see README) — that always works.

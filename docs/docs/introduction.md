@@ -7,7 +7,7 @@ sidebar_position: 1
 
 # Introduction
 
-Magmos is a streaming payroll protocol on Arc with a native yield layer. Organizations deposit funds into payment pools and stream salaries to employees continuously, accruing value every millisecond. While funds sit unclaimed they earn yield through integrated lending protocols, and that yield flows to the organization. When employees claim, they can route their pay into personal vaults running their own yield strategies.
+Magmos is a streaming payroll protocol on HashKey Chain with a native yield layer. Organizations deposit funds into payment pools and stream salaries to employees continuously, accruing value every millisecond. While funds sit unclaimed they earn yield through integrated lending protocols, and that yield flows to the organization. When employees claim, they can route their pay into personal vaults running their own yield strategies.
 
 The yield layer is what sets Magmos apart. Other streaming payroll protocols move money on a schedule. Magmos puts idle payroll to work the moment it is deposited and keeps earning until the last millisecond before a claim.
 

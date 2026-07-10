@@ -50,7 +50,7 @@ export function ConnectStep({
   return (
     <Card
       title="Create your organization"
-      subtitle="Name your org to start streaming USDC payroll on Arc."
+      subtitle="Name your org to start streaming USDC payroll on HashKey Chain."
       footer={
         <>
           <span className="text-[12px] text-[var(--sw-text-dim)]">Step 1 of 2</span>

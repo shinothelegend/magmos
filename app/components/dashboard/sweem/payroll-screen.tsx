@@ -165,7 +165,7 @@ export function PayrollScreen() {
         <div>
           <h1 className="text-[26px] font-semibold tracking-[-0.02em] text-[var(--sw-text)]">Payroll</h1>
           <p className="mt-1 text-[14px] text-[var(--sw-text-muted)]">
-            Streaming USDC to your team every second on Arc.
+            Streaming USDC to your team every second on HashKey Chain.
           </p>
         </div>
         <div className="flex items-center gap-2.5">
@@ -404,7 +404,7 @@ export function PayrollScreen() {
           </span>
         </div>
         <p className="text-[12.5px] text-[var(--sw-text-muted)]">
-          Adds liquidity to the streaming pool so payroll keeps flowing. Approve then top up — two quick signatures on Arc.
+          Adds liquidity to the streaming pool so payroll keeps flowing. Approve then top up — two quick signatures on HashKey Chain.
         </p>
       </Modal>
     </div>

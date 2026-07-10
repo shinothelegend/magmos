@@ -18,5 +18,6 @@ tab_width = 4
 
 [rpc_endpoints]
 arc_testnet = "https://rpc.testnet.arc.network"
+hashkey_testnet = "https://hashkey-chain-testnet.rpc.thirdweb.com"
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

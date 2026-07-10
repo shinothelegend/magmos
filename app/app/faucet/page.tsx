@@ -7,7 +7,7 @@ import { erc20Abi, formatUnits } from "viem";
 import { toast } from "sonner";
 import { WalletButton } from "@/components/dashboard/wallet-button";
 import { faucetMint } from "@/lib/writes";
-import { USDC, USDC_DECIMALS, ARC_CHAIN_ID, EXPLORER_TX } from "@/lib/magmos";
+import { USDC, USDC_DECIMALS, HASHKEY_CHAIN_ID, EXPLORER_TX } from "@/lib/magmos";
 
 // Standalone test-USDC faucet. Uses the global wagmi context (root layout), so it works
 // with just a connected wallet — no onboarding required.
@@ -34,7 +34,7 @@ export default function FaucetPage() {
 
   const onFaucet = () => {
     if (!isConnected) return toast.error("Connect your wallet first");
-    if (chainId !== ARC_CHAIN_ID) return toast.error("Switch to Arc testnet");
+    if (chainId !== HASHKEY_CHAIN_ID) return toast.error("Switch to HashKey testnet");
     writeContract(faucetMint(), { onError: (e) => toast.error(e.message.slice(0, 140)) });
   };
 
@@ -54,13 +54,13 @@ export default function FaucetPage() {
         <div className="rounded-2xl border border-[#26262b] bg-[#151517] p-7 shadow-[0_8px_40px_rgba(0,0,0,0.5)]">
           <div className="mb-1 inline-flex items-center gap-2 rounded-full border border-[#2a2a2e] bg-[#1a1a1c] px-3 py-1 text-[11px] font-medium text-[#a1a1aa]">
             <span className="size-1.5 rounded-full bg-[#ff6a1a]" />
-            Arc testnet · test USDC
+            HashKey testnet · test USDC
           </div>
           <h1 className="mt-3 text-2xl font-semibold tracking-tight">Test USDC Faucet</h1>
           <p className="mt-1.5 text-[13.5px] leading-relaxed text-[#a1a1aa]">
             Mint free test USDC to fund payroll and try Magmos end to end. This is a testnet
             token (6-dec, identical to Circle USDC) — for the official run the app can point at
-            real USDC on Arc.
+            real USDC on HashKey Chain.
           </p>
 
           <div className="mt-5 rounded-xl border border-[#26262b] bg-[#0f0f11] px-4 py-3.5">
@@ -106,7 +106,7 @@ export default function FaucetPage() {
             >
               Circle's faucet
             </a>{" "}
-            (select Arc testnet) so you can send transactions.
+            (select HashKey testnet) so you can send transactions.
           </div>
 
           <Link

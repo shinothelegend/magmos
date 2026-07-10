@@ -182,7 +182,7 @@ export function PayModal({
                       <TokenIcon token={t} size={32} />
                       <div className="min-w-0 flex-1">
                         <p className="text-[14px] font-semibold text-[var(--sw-text)]">{TOKEN_NAME[t.symbol]}</p>
-                        <p className="text-[12px] text-[var(--sw-text-dim)]">Pay with {t.symbol} on Arc</p>
+                        <p className="text-[12px] text-[var(--sw-text-dim)]">Pay with {t.symbol} on HashKey Chain</p>
                       </div>
                       <span
                         className={cn(
@@ -233,7 +233,7 @@ export function PayModal({
               </button>
               <p className="mt-3 flex items-center justify-center gap-1.5 text-[11.5px] text-[var(--sw-text-dim)]">
                 <Lock className="size-3.5" strokeWidth={2} />
-                Payments secured on the Arc network
+                Payments secured on the HashKey Chain network
               </p>
             </div>
             </>

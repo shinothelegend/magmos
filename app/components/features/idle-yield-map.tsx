@@ -63,7 +63,7 @@ export function IdleYieldMap() {
         <div className="mt-0.5 text-[15px] font-semibold tabular-nums text-white">
           $<YieldTicker base={3128.42} perSec={0.07} />
         </div>
-        <div className="text-[10px] font-medium text-[#ff6a1a]">Settled per second on Arc</div>
+        <div className="text-[10px] font-medium text-[#ff6a1a]">Settled per second on HashKey Chain</div>
       </div>
     </div>
   );

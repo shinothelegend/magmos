@@ -181,7 +181,7 @@ export function PayModal(props: PayModalProps) {
                       <TokenLogo symbol={t} size={32} />
                       <div style={{ flex: 1, minWidth: 0, textAlign: "left" }}>
                         <p style={{ fontSize: 14, fontWeight: 600, color: theme.text }}>{TOKEN_NAME[t]}</p>
-                        <p style={{ fontSize: 12, color: theme.textDim }}>Pay with {t} on Arc</p>
+                        <p style={{ fontSize: 12, color: theme.textDim }}>Pay with {t} on HashKey Chain</p>
                       </div>
                       <span style={s.radio(active)}>{active ? "✓" : ""}</span>
                     </button>
@@ -213,7 +213,7 @@ export function PayModal(props: PayModalProps) {
                   }}
                 />
               )}
-              <p style={s.secured}>🔒 Payments secured on the Arc network</p>
+              <p style={s.secured}>🔒 Payments secured on the HashKey Chain network</p>
               {isConnected && address && (
                 <button onClick={() => disconnect()} style={s.disconnect}>
                   {address.slice(0, 6)}…{address.slice(-4)} · Disconnect

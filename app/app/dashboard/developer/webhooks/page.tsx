@@ -126,7 +126,7 @@ export async function POST(req) {
         <div>
           <h1 className="text-[22px] font-semibold tracking-[-0.02em] text-[var(--sw-text)]">Webhooks</h1>
           <p className="mt-1 text-[13.5px] text-[var(--sw-text-muted)]">
-            Get notified at your own endpoint when payments succeed, fail, or settle on Arc.
+            Get notified at your own endpoint when payments succeed, fail, or settle on HashKey Chain.
           </p>
         </div>
         {endpoints.length > 0 && (

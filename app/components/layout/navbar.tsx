@@ -12,12 +12,12 @@ type Menu = { title: string; desc: string; items: MenuItem[] };
 const MENUS: Record<string, Menu> = {
   Product: {
     title: "The Magmos platform",
-    desc: "Stream USDC payroll and payouts by the second on Arc. Run it from the dashboard, embed payouts with the SDK, or pay from your browser.",
+    desc: "Stream USDC payroll and payouts by the second on HashKey Chain. Run it from the dashboard, embed payouts with the SDK, or pay from your browser.",
     items: [
-      { name: "Magmos", sub: "Real-time cross-border payroll on Arc", logo: "/magmos.png" },
+      { name: "Magmos", sub: "Real-time cross-border payroll on HashKey Chain", logo: "/magmos.png" },
       {
         name: "Payouts SDK",
-        sub: "@sweem/sdk · stream USDC on Arc",
+        sub: "@sweem/sdk · stream USDC on HashKey Chain",
         icon: Code2,
         href: "https://www.npmjs.com/package/@sweem/sdk",
       },
@@ -26,9 +26,9 @@ const MENUS: Record<string, Menu> = {
   },
   Network: {
     title: "Built on Circle's stack",
-    desc: "USDC settles per second on Arc, Circle's stablecoin L1, and recipients bridge earnings home via Circle CCTP — dollar-native end to end.",
+    desc: "USDC settles per second on HashKey Chain, and recipients bridge earnings home via Circle CCTP — dollar-native end to end.",
     items: [
-      { name: "Arc", sub: "Circle's stablecoin L1", logo: "/protocols/lending/usd-coin-usdc-logo.png" },
+      { name: "HashKey Chain", sub: "High-performance L1", logo: "/protocols/lending/usd-coin-usdc-logo.png" },
       { name: "USDC", sub: "Native gas & settlement", logo: "/protocols/lending/usd-coin-usdc-logo.png" },
       { name: "Circle CCTP", sub: "Bridge earnings home", logo: "/protocols/lending/usd-coin-usdc-logo.png" },
     ],

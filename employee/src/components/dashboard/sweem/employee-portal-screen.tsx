@@ -130,7 +130,7 @@ function StreamCard({
       ? Number(((MIN_CLAIM_RAW - baseRaw) * stream.ratePeriod) / stream.rateAmount) + 1
       : 0;
 
-  // ratePeriod is in SECONDS on Arc; the ticker interpolates in ms.
+  // ratePeriod is in SECONDS on HashKey Chain; the ticker interpolates in ms.
   const periodMs = stream.ratePeriod * 1000n;
 
   async function handleClaim() {

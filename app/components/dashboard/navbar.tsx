@@ -15,7 +15,7 @@ export function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
           </svg>
         </button>
         <p className="hidden text-[13px] text-[var(--sw-text-muted)] sm:block">
-          Real-time USDC payroll on Arc
+          Real-time USDC payroll on HashKey Chain
         </p>
       </div>
 

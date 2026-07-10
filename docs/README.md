@@ -1,6 +1,6 @@
 # Magmos Docs
 
-Documentation site for Magmos, the streaming payroll protocol on Arc. Built with Docusaurus.
+Documentation site for Magmos, the streaming payroll protocol on HashKey Chain. Built with Docusaurus.
 
 ## Develop
 

@@ -69,7 +69,7 @@ export function ServicesSection() {
             Pay the world that <span className="text-text-muted">streams in real time</span>
           </>
         }
-        description="Fund a USDC pool once and stream salaries and payouts to recipients worldwide by the second on Arc — claimed anytime, bridged home via CCTP."
+        description="Fund a USDC pool once and stream salaries and payouts to recipients worldwide by the second on HashKey Chain — claimed anytime, bridged home via CCTP."
       />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

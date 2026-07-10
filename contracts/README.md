@@ -43,9 +43,9 @@ forge test --gas-report
 forge fmt
 ```
 
-## Deploy (Arc testnet)
+## Deploy (HashKey testnet)
 
-Fund the deployer with native USDC for gas first: https://faucet.circle.com (select Arc testnet).
+Fund the deployer with native USDC for gas first: https://faucet.circle.com (select HashKey testnet).
 
 ```bash
 export $(grep -v '^#' .env.deployer | xargs)
@@ -55,7 +55,7 @@ forge script script/Deploy.s.sol:Deploy --rpc-url arc_testnet --broadcast -vvv
 
 Post-deploy (optional): `registry.setFees(depositBps, orgYieldBps, vaultYieldBps)` — starts at 0.
 
-## Arc testnet reference
+## HashKey testnet reference
 Chain `5042002` · RPC `https://rpc.testnet.arc.network` · explorer `https://testnet.arcscan.app`
 USDC (6dp) `0x3600000000000000000000000000000000000000` · USYC `0xe9185F0c5F296Ed1797AaE4238D26CCaBEadb86C`
 CCTP TokenMessengerV2 `0x8FE6B999Dc680CcFDD5Bf7EB0974218be2542DAA` (domain 26)

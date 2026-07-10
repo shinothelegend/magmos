@@ -2,7 +2,7 @@ import { defineWalletSetup } from '@synthetixio/synpress'
 import { MetaMask } from '@synthetixio/synpress/playwright'
 
 // Synpress builds a reusable MetaMask cache from this file:  `npm run build:cache`
-// It initializes MetaMask with a throwaway seed, adds the Arc testnet, and imports
+// It initializes MetaMask with a throwaway seed, adds the HashKey testnet, and imports
 // your FUNDED deployer/org account from a private key supplied via env.
 //
 //   DEMO_PK=0x<deployer-private-key> npm run build:cache
@@ -23,7 +23,7 @@ export default defineWalletSetup(PASSWORD, async (context, walletPage) => {
 
   await metamask.importWallet(SEED)
 
-  // Add Arc testnet (chainId 5042002; USDC is the native gas token).
+  // Add HashKey testnet (chainId 5042002; USDC is the native gas token).
   await metamask.addNetwork({
     name: 'Arc Testnet',
     rpcUrl: 'https://rpc.testnet.arc.network',

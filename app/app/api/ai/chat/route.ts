@@ -48,7 +48,7 @@ function heuristicReply(prompt: string, ctx: Ctx): string {
     return `Idle treasury can earn yield through the Magmos vault (ERC-4626, routing to Circle's USYC in production). Move idle USDC in from the Developer → API keys → Treasury panel, or the Yield page.`
   }
   if (/send home|cctp|bridge|remit/.test(q)) {
-    return `Recipients can bridge claimed USDC home with Circle CCTP — burned on Arc, attested by Circle, minted on their home chain. It's on the recipient app's "Send home" flow.`
+    return `Recipients can bridge claimed USDC home with Circle CCTP — burned on HashKey Chain, attested by Circle, minted on their home chain. It's on the recipient app's "Send home" flow.`
   }
   if (/hi|hello|hey|help|what can you/.test(q)) {
     return `Hi${ctx.org ? `, ${ctx.org}` : ''} 👋 I'm Magmos AI — your payroll copilot. Ask me things like *"how much am I streaming a month?"*, *"who's paused?"*, or *"what's my runway?"* and I'll answer from your live on-chain data.`

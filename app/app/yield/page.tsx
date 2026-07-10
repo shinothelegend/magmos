@@ -14,7 +14,7 @@ import { WalletButton } from "@/components/dashboard/wallet-button";
 import {
   USDC,
   USDC_DECIMALS,
-  ARC_CHAIN_ID,
+  HASHKEY_CHAIN_ID,
   EXPLORER_TX,
   MAGMOS_YIELD_VAULT,
   YIELD_VAULT_ABI,
@@ -92,7 +92,7 @@ export default function YieldPage() {
 
   const guard = () => {
     if (!isConnected) { toast.error("Connect your wallet"); return false; }
-    if (chainId !== ARC_CHAIN_ID) { toast.error("Switch to Arc testnet"); return false; }
+    if (chainId !== HASHKEY_CHAIN_ID) { toast.error("Switch to HashKey testnet"); return false; }
     return true;
   };
 

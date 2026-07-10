@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: "Which blockchain does Magmos use?",
-    a: "Magmos runs on Arc, Circle's stablecoin L1. USDC is the native gas token, so fees are dollar-denominated and settlement is deterministic and instant.",
+    a: "Magmos runs on HashKey Chain, Circle's stablecoin L1. USDC is the native gas token, so fees are dollar-denominated and settlement is deterministic and instant.",
   },
   {
     q: "Can recipients claim their pay anytime?",
@@ -32,7 +32,7 @@ const faqs = [
   },
   {
     q: "Why is streaming cheaper than a wire?",
-    a: "Fees are transparent and USDC-denominated end to end — no 6% remittance haircut, no correspondent-bank spread. Settlement is per second on Arc instead of 1–3 days.",
+    a: "Fees are transparent and USDC-denominated end to end — no 6% remittance haircut, no correspondent-bank spread. Settlement is per second on HashKey Chain instead of 1–3 days.",
   },
   {
     q: "Is Magmos custodial?",

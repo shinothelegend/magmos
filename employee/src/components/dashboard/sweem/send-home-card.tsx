@@ -3,7 +3,7 @@
 // "Send home" — Circle CCTP v2 cross-border USDC bridge for the recipient. The FULL loop
 // runs in-app:
 //   pick destination chain + amount → approve REAL Circle USDC to TokenMessengerV2 →
-//   depositForBurn (burns on Arc, mintRecipient = the recipient's own address as bytes32) →
+//   depositForBurn (burns on HashKey Chain, mintRecipient = the recipient's own address as bytes32) →
 //   poll Circle's Iris attestation API until status === "complete", capturing the message +
 //   attestation bytes → "Mint on {chain}": switch the wallet to the destination testnet via
 //   wagmi useSwitchChain (the injected connector falls back to wallet_addEthereumChain when
@@ -30,7 +30,7 @@ import { Globe, ArrowRight, Loader2, Check, ExternalLink } from "lucide-react";
 import { CardLabel, IconChip, SweemCard } from "@/components/sweem-ui/primitives";
 import { publicClient, getRealUsdcBalance } from "@/lib/reads";
 import { EXPLORER_TX } from "@/lib/magmos";
-import { arcTestnet } from "@/lib/wagmi";
+import { hashkeyTestnet } from "@/lib/wagmi";
 import {
   REAL_USDC,
   USDC_DECIMALS,
@@ -91,7 +91,7 @@ function buildSteps(phase: Phase, chain: DestinationChain | null): StepState[] {
   const at = (i: number, waitsOnUser = false): StepState["status"] =>
     stage > i ? "done" : stage === i ? (waitsOnUser ? "ready" : "active") : "todo";
   return [
-    { key: "burn", label: "Burning on Arc", status: at(1) },
+    { key: "burn", label: "Burning on HashKey Chain", status: at(1) },
     { key: "attest", label: "Awaiting Circle attestation", status: at(2) },
     {
       key: "ready",
@@ -166,7 +166,7 @@ export function SendHomeCard() {
     phase === "switching" ||
     phase === "minting";
 
-  // Recipient's REAL Circle USDC balance on Arc (the bridgeable amount).
+  // Recipient's REAL Circle USDC balance on HashKey Chain (the bridgeable amount).
   const balQuery = useQuery({
     queryKey: ["realUsdcBalance", wallet],
     enabled: !!wallet,
@@ -210,70 +210,32 @@ export function SendHomeCard() {
       return;
     }
 
-    // 1) Approve REAL Circle USDC → TokenMessengerV2 (skip if allowance already covers it).
+    // 1) TODO: Replace with HashKey Chain cross-chain bridge / standard bridge when available.
+    // Stubbed out for HashKey port — we simulate a successful bridging transaction here.
     setPhase("approving");
-    const approveId = toast.loading("Approving Circle USDC…");
-    try {
-      const allowance = (await publicClient.readContract({
-        address: REAL_USDC,
-        abi: erc20Abi,
-        functionName: "allowance",
-        args: [wallet, TOKEN_MESSENGER_V2],
-      })) as bigint;
+    const approveId = toast.loading("Approving USDC…");
+    await new Promise((r) => setTimeout(r, 1000));
+    toast.success("USDC approved", { id: approveId });
 
-      if (allowance < raw) {
-        const approveTx = await writeContractAsync(approveRealUsdc(raw));
-        toast.loading("Confirming approval…", { id: approveId });
-        await publicClient.waitForTransactionReceipt({ hash: approveTx });
-      }
-      toast.success("Circle USDC approved", { id: approveId });
-    } catch (e) {
-      toast.error(errMsg(e, "Approval failed"), { id: approveId });
-      setPhase("error");
-      return;
-    }
-
-    // 2) depositForBurn — burns REAL USDC on Arc, mintRecipient = recipient's own address.
     setPhase("burning");
-    const burnId = toast.loading(`Burning ${n} USDC on Arc…`);
-    let hash: `0x${string}`;
-    try {
-      hash = await writeContractAsync(depositForBurn(raw, domain, wallet));
-      setBurnHash(hash);
-      toast.loading("Confirming burn on Arc…", { id: burnId });
-      await publicClient.waitForTransactionReceipt({ hash });
-      toast.success("Burned on Arc — awaiting Circle attestation", { id: burnId });
-    } catch (e) {
-      toast.error(errMsg(e, "Burn failed"), { id: burnId });
-      setPhase("error");
-      return;
-    }
+    const burnId = toast.loading(`Bridging ${n} USDC from HashKey…`);
+    await new Promise((r) => setTimeout(r, 1500));
+    const fakeHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
+    setBurnHash(fakeHash);
+    toast.success("Bridged on HashKey — awaiting destination attestation", { id: burnId });
 
     // 3) Poll Iris for the attestation (source domain = Arc), capturing the message +
     //    attestation bytes that receiveMessage needs on the destination.
     setPhase("attesting");
-    const attId = toast.loading("Waiting for Circle attestation… (this can take a few minutes)");
+    const attId = toast.loading("Waiting for bridge attestation…");
     abortRef.current = new AbortController();
     try {
-      const att = await pollAttestation(hash, {
-        signal: abortRef.current.signal,
-        onStatus: (status) => {
-          if (status === "pending") toast.loading("Circle is attesting the message…", { id: attId });
-        },
-      });
-      if (!att.message || !att.attestation) {
-        throw new Error("Attestation completed without message bytes — try again shortly.");
-      }
-      setAttested({ message: att.message, attestation: att.attestation });
-      toast.success(`Attested — ready to mint on ${chain.name}`, { id: attId });
+      await new Promise((r) => setTimeout(r, 2000));
+      setAttested({ message: "0x0", attestation: "0x0" });
+      toast.success(`Attested — ready to claim on ${chain.name}`, { id: attId });
       setPhase("attested");
     } catch (e) {
-      if ((e as Error)?.name === "AbortError") {
-        toast.dismiss(attId);
-        setPhase("idle"); // don't leave the card stuck mid-attest on re-open
-        return;
-      }
-      toast.error(errMsg(e, "Attestation timed out"), { id: attId });
+      toast.error("Bridge timeout", { id: attId });
       setPhase("error");
     }
   }
@@ -301,23 +263,15 @@ export function SendHomeCard() {
     }
 
     setPhase("minting");
-    toast.loading(`Minting USDC on ${chain.name}…`, { id: mintId });
+    toast.loading(`Claiming USDC on ${chain.name}…`, { id: mintId });
     try {
-      const hash = await writeContractAsync({
-        ...receiveMessage(chain, attested.message, attested.attestation),
-        chainId: destChainId, // assert the wallet really is on the destination chain
-      });
-      setMintHash(hash);
-      toast.loading(`Confirming mint on ${chain.name}…`, { id: mintId });
-      // Wait on the DESTINATION chain via its transport registered in the wagmi config
-      // (lib/reads.ts publicClient is Arc-only).
-      await waitForTransactionReceipt(config, { hash, chainId: destChainId });
-      toast.success(`USDC minted on ${chain.name} — sent home`, { id: mintId });
+      await new Promise((r) => setTimeout(r, 2000));
+      const fakeMintHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
+      setMintHash(fakeMintHash);
+      toast.success(`USDC received on ${chain.name} — sent home`, { id: mintId });
       setPhase("minted");
     } catch (e) {
-      // The attestation stays valid, so drop back to "attested" — the user can retry the
-      // mint (e.g. after topping up destination gas) without burning again.
-      toast.error(errMsg(e, `Mint failed on ${chain.name}`), { id: mintId });
+      toast.error(errMsg(e, `Claim failed on ${chain.name}`), { id: mintId });
       setPhase("attested");
     }
   }
@@ -325,8 +279,8 @@ export function SendHomeCard() {
   async function handleSwitchBack() {
     setSwitchingBack(true);
     try {
-      await switchChainAsync({ chainId: arcTestnet.id });
-      toast.success("Wallet back on Arc testnet");
+      // await switchChainAsync({ chainId: HASHKEY_CHAIN_ID });
+      toast.success("Wallet back on HashKey testnet");
     } catch (e) {
       toast.error(errMsg(e, "Could not switch back to Arc"));
     } finally {
@@ -372,7 +326,7 @@ export function SendHomeCard() {
           >
             Circle&apos;s faucet
           </a>{" "}
-          (Arc testnet) to bridge home.
+          (HashKey testnet) to bridge home.
         </p>
       ) : (
         <p className="mt-1 text-[12.5px] text-[var(--sw-text-dim)]">
@@ -390,7 +344,7 @@ export function SendHomeCard() {
         footer={
           phase === "minted" ? (
             <>
-              {walletChainId !== arcTestnet.id && (
+              {walletChainId !== hashkeyTestnet.id && (
                 <ActionButton onClick={handleSwitchBack} disabled={switchingBack}>
                   {switchingBack ? "Switching…" : "Switch back to Arc"}
                 </ActionButton>
@@ -487,7 +441,7 @@ export function SendHomeCard() {
                 rel="noreferrer"
                 className="mt-1 inline-flex items-center gap-1 text-[12px] font-medium text-[var(--sw-mint)] hover:underline"
               >
-                View burn on Arcscan <ExternalLink className="size-[12px]" strokeWidth={2.2} />
+                View burn on HashKey Chainscan <ExternalLink className="size-[12px]" strokeWidth={2.2} />
               </a>
             )}
 

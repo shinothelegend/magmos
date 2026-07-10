@@ -2,7 +2,7 @@ import { erc20Abi } from "viem";
 import { toRaw, type TokenConfig } from "./tokens";
 
 // Build a wagmi `writeContract` request for a direct ERC-20 USDC transfer from
-// the connected customer wallet to the merchant's receiving address on Arc.
+// the connected customer wallet to the merchant's receiving address on HashKey Chain.
 // The <PayModal/> executes this with wagmi's useWriteContract.
 export function buildPaymentRequest(opts: {
   token: TokenConfig;

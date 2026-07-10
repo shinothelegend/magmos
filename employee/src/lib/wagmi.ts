@@ -1,4 +1,4 @@
-// wagmi + viem setup for Arc testnet. Replaces the Sui dapp-kit client config.
+// wagmi + viem setup for HashKey testnet. Replaces the Sui dapp-kit client config.
 //
 // Besides Arc (the app's primary chain), the config registers the four CCTP v2
 // destination testnets the recipient can "send home" to. Registering them lets
@@ -11,19 +11,18 @@ import { http, createConfig, createStorage, cookieStorage } from 'wagmi'
 import { defineChain } from 'viem'
 import { sepolia, avalancheFuji, arbitrumSepolia, baseSepolia } from 'viem/chains'
 import { injected } from 'wagmi/connectors'
-import { ARC_CHAIN_ID, ARC_RPC_URL, ARC_WS_URL, ARC_EXPLORER, MULTICALL3 } from './magmos'
+import { HASHKEY_CHAIN_ID, HASHKEY_RPC_URL, HASHKEY_WS_URL, HASHKEY_EXPLORER, MULTICALL3 } from './magmos'
 
-/// Arc testnet. Native gas token is USDC (18-dec native); the ERC-20 USDC used for
-/// payroll is a separate 6-dec token (see lib/magmos.ts USDC).
-export const arcTestnet = defineChain({
-  id: ARC_CHAIN_ID,
-  name: 'Arc Testnet',
-  nativeCurrency: { name: 'USDC', symbol: 'USDC', decimals: 18 },
+/// HashKey testnet. Native gas token is HSK.
+export const hashkeyTestnet = defineChain({
+  id: HASHKEY_CHAIN_ID,
+  name: 'HashKey Chain Testnet',
+  nativeCurrency: { name: 'HSK', symbol: 'HSK', decimals: 18 },
   rpcUrls: {
-    default: { http: [ARC_RPC_URL], webSocket: [ARC_WS_URL] },
+    default: { http: [HASHKEY_RPC_URL], webSocket: [HASHKEY_WS_URL] },
   },
   blockExplorers: {
-    default: { name: 'Arcscan', url: ARC_EXPLORER },
+    default: { name: 'HashKey Testnet Explorer', url: HASHKEY_EXPLORER },
   },
   contracts: {
     multicall3: { address: MULTICALL3 },
@@ -32,11 +31,12 @@ export const arcTestnet = defineChain({
 })
 
 export const wagmiConfig = createConfig({
-  // arcTestnet FIRST — the app's primary chain. The rest are CCTP v2 mint destinations.
-  chains: [arcTestnet, sepolia, avalancheFuji, arbitrumSepolia, baseSepolia],
-  connectors: [injected()],
+  // hashkeyTestnet FIRST — the app's primary chain. The rest are CCTP v2 mint destinations.
+  chains: [hashkeyTestnet, sepolia, avalancheFuji, arbitrumSepolia, baseSepolia],
+  connectors: [injected({ target: 'metaMask' })],
+  multiInjectedProviderDiscovery: false,
   transports: {
-    [arcTestnet.id]: http(ARC_RPC_URL),
+    [hashkeyTestnet.id]: http(HASHKEY_RPC_URL),
     // Destination testnets use their viem/chains default public RPCs — only exercised for
     // the destination-side receiveMessage mint + receipt wait.
     [sepolia.id]: http(),

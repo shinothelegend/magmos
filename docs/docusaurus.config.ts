@@ -4,7 +4,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "Magmos",
-  tagline: "Streaming payroll with a native yield layer, built on Arc",
+  tagline: "Streaming payroll with a native yield layer, built on HashKey Chain",
   favicon: "img/favicon.png",
 
   future: {
@@ -108,7 +108,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright ${new Date().getFullYear()} Magmos. Built on Arc.`,
+      copyright: `Copyright ${new Date().getFullYear()} Magmos. Built on HashKey Chain.`,
     },
     prism: {
       theme: prismThemes.github,

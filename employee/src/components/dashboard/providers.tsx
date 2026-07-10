@@ -6,7 +6,7 @@ import { WagmiProvider } from "wagmi";
 import { wagmiConfig } from "@/lib/wagmi";
 
 // Scopes the wagmi wallet + react-query context to the employee portal. (Was
-// SuiClientProvider + WalletProvider; now WagmiProvider on Arc testnet — see
+// SuiClientProvider + WalletProvider; now WagmiProvider on HashKey Chain testnet — see
 // lib/wagmi.ts.)
 export function DashboardProviders({ children }: { children: React.ReactNode }) {
   // One QueryClient per browser session (avoid re-creating across renders).

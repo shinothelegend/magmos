@@ -109,7 +109,7 @@ export function OrgHome() {
             {org ? org.name : "Overview"}
           </h1>
           <p className="mt-0.5 text-[13px] text-[var(--sw-text-muted)]">
-            Real-time USDC payroll streaming on Arc
+            Real-time USDC payroll streaming on HashKey Chain
           </p>
         </div>
         <button

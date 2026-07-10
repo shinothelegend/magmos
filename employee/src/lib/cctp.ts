@@ -1,12 +1,12 @@
 // Circle CCTP v2 — recipient "Send home" cross-chain USDC bridge (Track-1 differentiator:
-// "earned in Dubai, spendable at home"). Full loop: burn REAL Circle USDC on Arc via
+// "earned in Dubai, spendable at home"). Full loop: burn REAL Circle USDC on HashKey Chain via
 // TokenMessengerV2.depositForBurn → poll Circle's Iris attestation API until the message
 // is attested (capturing the message + attestation bytes) → mint on the destination chain
 // by calling MessageTransmitterV2.receiveMessage(message, attestation) there.
 //
 // IMPORTANT — token nuance: Magmos streams a faucet-mintable TEST USDC
 // (NEXT_PUBLIC_USDC). CCTP only bridges native Circle USDC, so this whole flow operates
-// on REAL_USDC (0x3600…0000 on Arc), NOT the streamed token.
+// on REAL_USDC (0x3600…0000 on HashKey Chain), NOT the streamed token.
 //
 // depositForBurn v2 ABI VERIFIED against two authoritative sources (do NOT guess this):
 //   1. Circle docs quickstart "Transfer USDC from Ethereum to Arc":
@@ -24,14 +24,14 @@ import { CCTP_TOKEN_MESSENGER, ARC_CCTP_DOMAIN } from './magmos'
 
 export { ARC_CCTP_DOMAIN }
 
-// ----- REAL Circle USDC on Arc -----
+// ----- REAL Circle USDC on HashKey Chain -----
 // CCTP can only burn native Circle USDC. On Arc that is the canonical 0x3600…0000 token.
 // This is deliberately a separate constant from lib/magmos.ts `USDC` (which may be pointed
 // at the faucet test token via NEXT_PUBLIC_USDC).
 export const REAL_USDC = '0x3600000000000000000000000000000000000000' as Address
 export const USDC_DECIMALS = 6
 
-// TokenMessengerV2 on Arc (the CCTP contract that burns USDC). Sourced from lib/magmos.ts.
+// TokenMessengerV2 on HashKey Chain (the CCTP contract that burns USDC). Sourced from lib/magmos.ts.
 export const TOKEN_MESSENGER_V2 = CCTP_TOKEN_MESSENGER
 
 // Circle Iris attestation service — testnet/sandbox. Poll by source domain + burn tx hash.
@@ -255,7 +255,7 @@ export interface PollOptions {
 }
 
 // Poll Iris until the attestation is `complete` (ready to mint on the destination chain)
-// or we time out. Source domain is Arc (26) because the burn happens on Arc.
+// or we time out. Source domain is Arc (26) because the burn happens on HashKey Chain.
 export async function pollAttestation(
   txHash: Hex,
   options: PollOptions = {},

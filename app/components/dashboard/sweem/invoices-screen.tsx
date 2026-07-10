@@ -20,7 +20,7 @@ import { shortAddr } from "./helpers";
 import { useSweemApi, type Invoice } from "@/lib/api";
 
 // Invoices are real: created via the Magmos API (persisted to MongoDB), listed
-// from the DB, and "Pay" fires a live ERC-20 USDC transfer on Arc, then marks
+// from the DB, and "Pay" fires a live ERC-20 USDC transfer on HashKey Chain, then marks
 // the invoice paid (with its tx hash) in the DB. No mock data.
 
 type InvoiceStatus = "paid" | "pending" | "overdue";
@@ -79,7 +79,7 @@ export function InvoicesScreen() {
     return { outstanding, outstandingCount, paid, paidCount, overdue, overdueCount };
   }, [invoices]);
 
-  // Real payment: an ERC-20 USDC transfer to the recipient on Arc, then persist
+  // Real payment: an ERC-20 USDC transfer to the recipient on HashKey Chain, then persist
   // the paid status + tx hash to the DB.
   async function handlePay(inv: Invoice) {
     if (!wallet) return toast.error("Connect a wallet first");
@@ -149,7 +149,7 @@ export function InvoicesScreen() {
         <div>
           <h1 className="text-[26px] font-semibold tracking-[-0.02em] text-[var(--sw-text)]">Invoices</h1>
           <p className="mt-1 text-[14px] text-[var(--sw-text-muted)]">
-            Bill clients and settle in USDC on Arc — one signature per invoice.
+            Bill clients and settle in USDC on HashKey Chain — one signature per invoice.
           </p>
         </div>
         <div className="flex items-center gap-2.5">
@@ -183,7 +183,7 @@ export function InvoicesScreen() {
             <span className="text-[13px] font-medium text-[var(--sw-text-muted)]">USDC</span>
           </div>
           <p className="mt-1 text-[12.5px] text-[var(--sw-text-muted)]">
-            {metrics.paidCount} settled on Arc
+            {metrics.paidCount} settled on HashKey Chain
           </p>
         </SweemCard>
         <SweemCard>
@@ -204,7 +204,7 @@ export function InvoicesScreen() {
           <div>
             <CardLabel>All invoices</CardLabel>
             <p className="mt-1 text-[13px] text-[var(--sw-text-muted)]">
-              Pay open invoices with a USDC transfer on Arc
+              Pay open invoices with a USDC transfer on HashKey Chain
             </p>
           </div>
           <IconChip>
@@ -289,7 +289,7 @@ export function InvoicesScreen() {
         open={createOpen}
         onClose={() => setCreateOpen(false)}
         title="Create invoice"
-        subtitle="Bill a client in USDC. Payable on Arc the moment it's created."
+        subtitle="Bill a client in USDC. Payable on HashKey Chain the moment it's created."
         footer={
           <>
             <ActionButton onClick={() => setCreateOpen(false)}>Cancel</ActionButton>

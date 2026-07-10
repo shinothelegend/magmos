@@ -67,7 +67,7 @@ const SLICE_COLORS = [
 
 type StatusKey = "Streaming" | "Paused" | "Stopped" | "Pending" | "—";
 
-// Magmos on Arc is USDC-only, so an employee's rate table is a single USDC leg.
+// Magmos on HashKey Chain is USDC-only, so an employee's rate table is a single USDC leg.
 // Kept in this shape so the per-token render loops read like the multi-token UI.
 function ratesByToken(e: Employee): Partial<Record<TokenSymbol, number>> {
   return { USDC: monthlyRate(e) };

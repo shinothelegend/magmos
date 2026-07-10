@@ -1,4 +1,4 @@
-// Token registry — Magmos on Arc is USDC-first. (Was multi-token USDC/SUI with per-protocol
+// Token registry — Magmos on HashKey Chain is USDC-first. (Was multi-token USDC/SUI with per-protocol
 // yield config on Sui; the Arc build streams USDC and drops the Sui yield adapters.)
 
 import { USDC, USDC_DECIMALS } from './magmos'

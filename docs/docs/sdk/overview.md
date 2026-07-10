@@ -6,7 +6,7 @@ sidebar_position: 1
 
 # SDK Overview
 
-The Magmos checkout SDK lets any website accept payments on Arc with a drop in React component. A merchant generates a publishable key, embeds a button, and receives funds directly to their wallet. Magmos never holds the money.
+The Magmos checkout SDK lets any website accept payments on HashKey Chain with a drop in React component. A merchant generates a publishable key, embeds a button, and receives funds directly to their wallet. Magmos never holds the money.
 
 ## Package
 

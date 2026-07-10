@@ -3,7 +3,7 @@
 // desc-sorted ActivityItem[] — every row links back to its tx on arcscan,
 // which is the receipt.
 //
-// Arc testnet's RPC caps eth_getLogs at a 10,000-block range (code -32614) and
+// HashKey testnet's RPC caps eth_getLogs at a 10,000-block range (code -32614) and
 // the chain mints ~2 blocks/s (a 10k chunk ≈ 1.4h), so a from-genesis scan is
 // impossible. Instead:
 //   1. All event types share one request per chunk (topic0 OR-list + topic1 =

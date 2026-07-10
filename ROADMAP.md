@@ -14,9 +14,9 @@ reads, addresses, auth) is rewired from Sui/Move → Arc/EVM.
 
 ## 1. Product framing (why this wins Track 1)
 
-**Magmos — real-time cross-border payroll & remittances on Arc.**
+**Magmos — real-time cross-border payroll & remittances on HashKey Chain.**
 UAE businesses stream USDC salaries, contractor payouts, and remittances to recipients
-anywhere in the world — settled *per-second* on Arc with deterministic finality,
+anywhere in the world — settled *per-second* on HashKey Chain with deterministic finality,
 transparent dollar-denominated fees, and instant claim + cross-chain bridge-out via
 Circle CCTP.
 
@@ -30,7 +30,7 @@ tick up per second from their UAE employer. They claim anytime and **bridge USDC
 home chain via CCTP** (or route to a yield vault), with a receipt. Payroll that settles the
 moment work happens — no 3-day SWIFT, no 6% remittance haircut.
 
-**Circle stack used (all on Arc):**
+**Circle stack used (all on HashKey Chain):**
 | Tool | Use in Magmos |
 |---|---|
 | **USDC** | primary rail — pools, streams, claims, escrow |
@@ -61,7 +61,7 @@ Suilend / stSUI / USDY). Yield, if built, is a single **USYC** adapter instead.
 
 ```
 magmos/
-├── contracts/        Foundry (Solidity) — Arc testnet
+├── contracts/        Foundry (Solidity) — HashKey testnet
 │   ├── MagmosRegistry.sol     fees + treasury + protocol allowlist   (← registry.move)
 │   ├── MagmosPayroll.sol      stream pools, deposit/claim/pause/stop  (← stream_pool.move)
 │   ├── MagmosVault.sol        recipient multi-token vaults            (← employee_vault.move)
@@ -73,7 +73,7 @@ magmos/
 
 **Chain layer stack:** `wagmi` + `viem` + connector (RainbowKit/injected), Arc chain config,
 Multicall3 for batched reads, event-log indexing for stream discovery (mirrors Sweem's
-chain-first read model). Backend: `viem` public client on Arc RPC; EIP-191/SIWE auth.
+chain-first read model). Backend: `viem` public client on HashKey Chain RPC; EIP-191/SIWE auth.
 
 **Contract design notes (Move → Solidity):**
 - **Time:** Sui `clock.timestamp_ms()` (ms) → EVM `block.timestamp` (seconds). Rate period
@@ -104,7 +104,7 @@ chain-first read model). Backend: `viem` public client on Arc RPC; EIP-191/SIWE 
 > MongoDB** (chain-first core; not the Cloudflare/Postgres stack) · demo corridor = **mixed
 > global** (a UAE marketplace settling with creators/sellers worldwide).
 
-### 🟢 Live on Arc testnet (chain 5042002)
+### 🟢 Live on HashKey Chain testnet (chain 5042002)
 | Contract | Address |
 |---|---|
 | MagmosRegistry | `0x9C73E54e78c0e1d5C46aC996A126Ba5B9d4fC501` |
@@ -117,7 +117,7 @@ Explorer: https://testnet.arcscan.app/address/0xc810cabdCb4b22df29A54bdb0E124EE3
 ### Phase 0 — Foundations ✅
 - [x] Deployer wallet generated → `0xF1a800BA07Bd0b55Dce43be2e837933AF3e53226` (fund via faucet.circle.com)
 - [x] Arc facts verified on-chain (chainId 5042002, USDC 6-dec, RPC live)
-- [x] Foundry init + Arc network profile in `foundry.toml` (solc 0.8.28, evm cancun, OZ v5.6.1)
+- [x] Foundry init + HashKey Chain network profile in `foundry.toml` (solc 0.8.28, evm cancun, OZ v5.6.1)
 - [ ] `magmos/app` + `magmos/employee` scaffolds (Phase 2)
 - [ ] Shared Arc config module (chain, RPC, addresses, ABIs) — emitted at deploy
 
@@ -129,7 +129,7 @@ Explorer: https://testnet.arcscan.app/address/0xc810cabdCb4b22df29A54bdb0E124EE3
 - [x] Foundry tests — **36 passing** (stream accrual, pause math, min-claim, rate-change
       crystallization, fee split, access control, multi-recipient)
 - [x] `forge script script/Deploy.s.sol` written + builds (emits `deployments/arc-testnet.json`)
-- [x] **Deployed to Arc testnet** ✅ (addresses above; verified live on-chain)
+- [x] **Deployed to HashKey testnet** ✅ (addresses above; verified live on-chain)
 - [ ] Post-deploy admin setup (fees stay 0 for demo; approve USYC when adapter lands)
 
 ### Phase 2 — App chain layer (rewire, UI untouched)
@@ -141,13 +141,13 @@ Explorer: https://testnet.arcscan.app/address/0xc810cabdCb4b22df29A54bdb0E124EE3
 - [x] `lib/reads.ts` — viem read helpers (orgPools/getPool/employeesOf/getStream/claimable/USDC/vault)
 - [x] deps swapped (@mysten/cetus → wagmi/viem/mongodb) and installed ✓
 - [ ] rewire ~20 screen components to use writes/reads + wagmi hooks (the bulk of the work)
-- [ ] `lib/tokens.ts` / `protocols.ts` → USDC / EURC / USYC on Arc; delete `cetus.ts`
+- [ ] `lib/tokens.ts` / `protocols.ts` → USDC / EURC / USYC on HashKey Chain; delete `cetus.ts`
 - [ ] `lib/api.ts` → same-origin `/api/*` + EIP-191 auth (keep hook signatures)
 - [ ] `isValidSuiAddress` → viem `isAddress` (onboarding CSV, wallet-button)
 - [ ] full `next build` passes
 
 ### Phase 3 — Cross-border layer (Track 1 differentiator) 🎯
-- [x] CCTP v2 on Arc: `approve` → `depositForBurn` (TokenMessengerV2 `0x8FE6…2DAA`, domain 26)
+- [x] CCTP v2 on HashKey Chain: `approve` → `depositForBurn` (TokenMessengerV2 `0x8FE6…2DAA`, domain 26)
       → Iris sandbox attestation polling. Signature verified vs Circle docs + on-chain source.
 - [x] Recipient "Send home" UI: destination-chain picker + multi-step burn/attest status + arcscan link
 - [x] **Destination-chain `receiveMessage` mint — in-app**: wallet switches to Sepolia/Fuji/
@@ -178,7 +178,7 @@ Explorer: https://testnet.arcscan.app/address/0xc810cabdCb4b22df29A54bdb0E124EE3
 
 ### Phase 6 — Polish & demo
 - [x] Landing + dashboard + nav + FAQ copy → Magmos / Arc / remittance framing (visuals unchanged)
-- [x] Faucet screen (`/faucet`) + faucet-mintable test USDC deployed on Arc
+- [x] Faucet screen (`/faucet`) + faucet-mintable test USDC deployed on HashKey Chain
 - [x] Demo script + pitch kit → `PITCH.md`; run guide → `RUN.md`
 - [x] On-chain proof: streaming works with real USDC AND the faucet token (arcscan)
 - [ ] Browser click-through of the full UI flow (proven via cast, not yet clicked)
@@ -187,7 +187,7 @@ Explorer: https://testnet.arcscan.app/address/0xc810cabdCb4b22df29A54bdb0E124EE3
 
 ---
 
-## 5. Arc testnet reference (verified)
+## 5. HashKey testnet reference (verified)
 
 | Item | Value |
 |---|---|

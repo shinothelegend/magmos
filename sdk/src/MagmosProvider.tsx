@@ -5,19 +5,19 @@ import { injected } from "wagmi/connectors";
 import { defineChain } from "viem";
 import type { MagmosNetwork } from "./types";
 
-// Arc testnet (Circle's stablecoin L1). USDC is the native gas token.
-const arcTestnet = defineChain({
+// HashKey testnet (Circle's stablecoin L1). USDC is the native gas token.
+const hashkeyTestnet = defineChain({
   id: 5042002,
   name: "Arc Testnet",
   nativeCurrency: { name: "USDC", symbol: "USDC", decimals: 18 },
   rpcUrls: { default: { http: ["https://rpc.testnet.arc.network"] } },
-  blockExplorers: { default: { name: "Arcscan", url: "https://testnet.arcscan.app" } },
+  blockExplorers: { default: { name: "HashKey Explorer", url: "https://testnet.arcscan.app" } },
 });
 
 const wagmiConfig = createConfig({
-  chains: [arcTestnet],
+  chains: [hashkeyTestnet],
   connectors: [injected()],
-  transports: { [arcTestnet.id]: http() },
+  transports: { [hashkeyTestnet.id]: http() },
 });
 
 // Self-contained wallet + query context for the SDK. Host apps that already run

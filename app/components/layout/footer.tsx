@@ -48,7 +48,7 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-x-8 gap-y-8 pt-2">
           <div>
             <h4 className="text-[14px] font-semibold text-[#101828]">Location</h4>
-            <p className="mt-2 text-[14px] leading-[1.7] text-[#667085]">Built on Arc</p>
+            <p className="mt-2 text-[14px] leading-[1.7] text-[#667085]">Built on HashKey Chain</p>
           </div>
           <div>
             <h4 className="text-[14px] font-semibold text-[#101828]">Email</h4>

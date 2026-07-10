@@ -4,12 +4,12 @@
 // getStream/claimableAmount.
 
 import { createPublicClient, http, erc20Abi, type Address } from 'viem'
-import { arcTestnet } from './wagmi'
-import { MAGMOS_PAYROLL, MAGMOS_VAULT, PAYROLL_ABI, VAULT_ABI, ARC_RPC_URL, USDC } from './magmos'
+import { hashkeyTestnet } from './wagmi'
+import { MAGMOS_PAYROLL, MAGMOS_VAULT, PAYROLL_ABI, VAULT_ABI, HASHKEY_RPC_URL, USDC } from './magmos'
 
 export const publicClient = createPublicClient({
-  chain: arcTestnet,
-  transport: http(ARC_RPC_URL),
+  chain: hashkeyTestnet,
+  transport: http(HASHKEY_RPC_URL),
 })
 
 export interface PoolSummary {

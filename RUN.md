@@ -1,53 +1,47 @@
 # Running Magmos locally
 
-Two Next.js apps + live contracts on Arc testnet.
+Two Next.js apps + live contracts on HashKey Chain testnet.
 
 ## 0. One-time wallet setup (MetaMask)
-Add **Arc Testnet**:
-- Network name: `Arc Testnet`
-- RPC: `https://rpc.testnet.arc.network`
-- Chain ID: `5042002`
-- Currency symbol: `USDC`
-- Explorer: `https://testnet.arcscan.app`
+Add **HashKey Chain Testnet**:
+- Network name: `HashKey Chain Testnet`
+- RPC: `https://hashkey-chain-testnet.rpc.thirdweb.com`
+- Chain ID: `133`
+- Currency symbol: `HSK`
+- Explorer: `https://testnet-explorer.hsk.xyz`
 
-Then get **gas** (native USDC on Arc): https://faucet.circle.com → select Arc testnet → paste your address.
+Then get **gas** (native HSK): https://faucet.hsk.xyz → paste your address.
 
-## 1. Org app (sender dashboard) — port 3000
+## 1. Deploy Contracts
+If you haven't deployed the contracts yet, do so using Foundry:
 ```bash
-cd "magmos/app"
-bun install         # first time
-PORT=3100 bun dev   # → http://localhost:3100
+cd contracts
+# Ensure you have HSK on the deployer account
+export DEPLOYER_PRIVATE_KEY="your-private-key"
+forge script script/Deploy.s.sol:Deploy --rpc-url hashkey_testnet --broadcast -vvv
 ```
-`.env.local` is already set (Mongo URI + Arc addresses + faucet-token USDC).
+Take the output addresses from `contracts/deployments/hashkey-testnet.json` and update the constants in `app/lib/magmos.ts` and `employee/src/lib/magmos.ts`.
 
-## 2. Recipient app (claim + send home) — port 3001
+## 2. Org app (sender dashboard) — port 3100
 ```bash
-cd "magmos/employee"
-bun install         # first time
-bun dev --port 3001 # → http://localhost:3001
+cd "app"
+npm install         # first time
+PORT=3100 npm run dev   # → http://localhost:3100
 ```
 
-## 3. Get test USDC (the faucet you asked for)
+## 3. Recipient app (claim + send home) — port 3001
+```bash
+cd "employee"
+npm install         # first time
+npm run dev -- --port 3001 # → http://localhost:3001
+```
+
+## 4. Get test USDC (the faucet you asked for)
 Open **http://localhost:3100/faucet** → connect wallet → **Get 10,000 test USDC**.
-(This mints `MagmosUSDC`, a 6-dec faucet token = the payroll rail. Real Circle USDC is a
-one-env-var switch — see below.)
+(This mints `MagmosUSDC`, a 6-dec faucet token = the payroll rail.)
 
-## 4. Demo flow
+## 5. Demo flow
 1. **Org** (localhost:3100): connect → onboarding (org name) → dashboard → **Fund payroll**:
    add recipients (address + name + monthly USDC) → approve USDC → stream. Streams start ticking.
 2. **Recipient** (localhost:3001): connect with a recipient wallet → watch the **live per-second
-   ticker** → **Claim** → USDC lands in the wallet → **Send home** (CCTP bridge to another chain).
-
-## Live contracts (Arc testnet, chain 5042002)
-| | Address |
-|---|---|
-| MagmosPayroll | `0xc810cabdCb4b22df29A54bdb0E124EE3ABA46093` |
-| MagmosRegistry | `0x9C73E54e78c0e1d5C46aC996A126Ba5B9d4fC501` |
-| MagmosVault | `0x9F4AeADcc5C21ACB1dC96C66947E4373C6abF322` |
-| MagmosUSDC (faucet test token) | `0x3248CcD4c276b4785f81f8c1207094262F67a33C` |
-| USDC (real Circle, on Arc) | `0x3600000000000000000000000000000000000000` |
-
-## Switching to real Circle USDC (official run)
-In both `.env.local` files set `NEXT_PUBLIC_USDC=0x3600000000000000000000000000000000000000`
-and restart. The contracts are token-agnostic — nothing else changes. (Get real testnet USDC
-from https://faucet.circle.com.) Note: CCTP "send home" always bridges real USDC.
+   ticker** → **Claim** → USDC lands in the wallet → **Send home** (mocked CCTP bridge to another chain).

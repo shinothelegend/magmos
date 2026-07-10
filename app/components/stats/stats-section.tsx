@@ -28,7 +28,7 @@ export function StatsSection() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/sweem-banner1.png"
-            alt="USDC salaries streaming to recipients worldwide on Arc"
+            alt="USDC salaries streaming to recipients worldwide on HashKey Chain"
             className="w-full rounded-[20px] object-contain"
           />
         </Reveal>
@@ -44,7 +44,7 @@ export function StatsSection() {
             <span className="text-text-muted">visibility into every payout stream.</span>
           </h2>
           <p className="mt-5 max-w-[520px] text-[13px] leading-6 text-text-secondary">
-            Move beyond 3-day wires and 6% fees. Magmos settles USDC payroll on Arc so every payout
+            Move beyond 3-day wires and 6% fees. Magmos settles USDC payroll on HashKey Chain so every payout
             is streamed per second, claimable anytime, and bridged home via CCTP.
           </p>
           <dl className="mt-8 grid grid-cols-3 gap-4 border-t border-border pt-8">

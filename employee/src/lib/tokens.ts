@@ -8,7 +8,7 @@ export type TokenSymbol = 'USDC'
 
 export interface TokenConfig {
   symbol: TokenSymbol
-  address: `0x${string}` // ERC-20 contract address on Arc
+  address: `0x${string}` // ERC-20 contract address on HashKey Chain
   decimals: number
   icon: string // public path to the coin logo
 }

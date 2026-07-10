@@ -1,4 +1,4 @@
-// @magmos/sdk — drop-in USDC checkout for the Arc network.
+// @magmos/sdk — drop-in USDC checkout for the HashKey Chain network.
 
 export { MagmosPayButton, type MagmosPayButtonProps } from "./MagmosPayButton";
 export { PayModal, type PayModalProps } from "./PayModal";

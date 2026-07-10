@@ -8,7 +8,7 @@ export function DoneStep({ onFinish }: { onFinish: () => void }) {
   return (
     <Card
       title="You're all set"
-      subtitle="Your organization is ready. Fund your payroll pool and start streaming USDC salaries on Arc."
+      subtitle="Your organization is ready. Fund your payroll pool and start streaming USDC salaries on HashKey Chain."
       footer={
         <>
           <span className="text-[12px] text-[var(--sw-text-dim)]">Step 2 of 2</span>

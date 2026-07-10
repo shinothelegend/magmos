@@ -25,7 +25,7 @@ export function ConfidenceSection() {
             with Confidence
           </>
         }
-        description="Deposit USDC once, stream to recipients worldwide, and let them bridge home via CCTP — automated and onchain on Arc."
+        description="Deposit USDC once, stream to recipients worldwide, and let them bridge home via CCTP — automated and onchain on HashKey Chain."
         actions={
           <LaunchAppButton className="inline-flex h-10 items-center rounded-full bg-brand-dark px-6 text-[13px] font-medium text-white transition-colors hover:bg-brand-dark/90">
             Launch Dashboard

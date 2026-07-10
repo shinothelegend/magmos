@@ -7,7 +7,7 @@ import { wagmiConfig } from "@/lib/wagmi";
 
 // Scopes the wagmi wallet + react-query context to the dashboard only. The marketing
 // site under `/` stays a plain presentational tree. (Was SuiClientProvider + WalletProvider;
-// now WagmiProvider on Arc testnet — see lib/wagmi.ts.)
+// now WagmiProvider on HashKey Chain testnet — see lib/wagmi.ts.)
 export function DashboardProviders({ children }: { children: React.ReactNode }) {
   // One QueryClient per browser session (avoid re-creating across renders).
   const [queryClient] = useState(() => new QueryClient());

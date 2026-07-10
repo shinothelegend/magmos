@@ -23,9 +23,9 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://portal.magmos.xyz";
-const TITLE = "Magmos Portal | Your USDC Stream on Arc";
+const TITLE = "Magmos Portal | Your USDC Stream on HashKey Chain";
 const OG_DESC =
-  "Claim your streamed pay per second and bridge it home via Circle CCTP, on Arc.";
+  "Claim your streamed pay per second and bridge it home via Circle CCTP, on HashKey Chain.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
