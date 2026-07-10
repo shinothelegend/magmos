@@ -13,6 +13,8 @@ async function rpc(method, params) {
 const TXS = [
   { name: "arcscan_topup", hash: "0x3a8d73f65550a0617bc4a7a0ba44772cc0d5045f3f4aa1727b2a5b6374c64171", method: "Deposit / top-up", label: "Streaming pool funded" },
   { name: "arcscan_invoice", hash: "0x5a43371923e4385ba59639e2370b903f44fd3e4167c4797b817f0c9c7ecc5d35", method: "Transfer (USDC)", label: "Invoice paid" },
+  { name: "proof_treasury", hash: "0x8e7eefa88207a3ba8486429514222634c03d96f6f6835179ba1115763dbbfee8", method: "Deposit (yield vault)", label: "Treasury earning yield" },
+  { name: "proof_claim", hash: "0x5bc621df1e4c53962a1c4e5d94ad06c17850e18111604d04ef4fb8ad3b3e87db", method: "Claim", label: "Recipient claimed streamed pay" },
 ];
 
 const short = (h, a = 12, b = 10) => `${h.slice(0, a)}…${h.slice(-b)}`;

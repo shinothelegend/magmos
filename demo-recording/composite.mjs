@@ -44,9 +44,14 @@ const ivS = at("arcscan_invoice"), ivE = at("commerce") || ivS + 12;
 const ov = `[0:v]scale=1440:900,fps=30,format=yuv420p[b];[1:v]scale=1440:900[c1];[2:v]scale=1440:900[c2];[b][c1]overlay=enable='between(t,${tuS},${tuE})'[b1];[b1][c2]overlay=enable='between(t,${ivS},${ivE})'[v]`;
 sh(`ffmpeg -y -i "${orgWebm}" -i "${R("cards/arcscan_topup.png")}" -i "${R("cards/arcscan_invoice.png")}" -filter_complex "${ov}" -map "[v]" -c:v libx264 -preset veryfast -crf 20 -an "${R("work/10-org.mp4")}"`);
 if (empWebm) sh(`ffmpeg -y -i "${empWebm}" ${enc} "${R("work/20-emp.mp4")}"`);
+// verified-on-chain recap: real block-explorer receipts for the txns
+const RECAP_CARDS = ["arcscan_topup", "arcscan_invoice", "proof_treasury", "proof_claim"];
+const RECAP_EACH = 13;
+const recapDur = RECAP_CARDS.length * RECAP_EACH;
+RECAP_CARDS.forEach((c, i) => sh(`ffmpeg -y -loop 1 -t ${RECAP_EACH} -i "${R(`cards/${c}.png`)}" ${enc} "${R(`work/50-recap-${i}.mp4`)}"`));
 sh(`ffmpeg -y -loop 1 -t ${closeDur} -i "${R("cards/close.png")}" ${enc} "${R("work/90-close.mp4")}"`);
 
-const parts = ["work/00-title.mp4", "work/10-org.mp4", empWebm ? "work/20-emp.mp4" : null, "work/90-close.mp4"].filter(Boolean);
+const parts = ["work/00-title.mp4", "work/10-org.mp4", empWebm ? "work/20-emp.mp4" : null, ...RECAP_CARDS.map((_, i) => `work/50-recap-${i}.mp4`), "work/90-close.mp4"].filter(Boolean);
 const listTxt = parts.map((p) => `file '${R(p)}'`).join("\n");
 sh(`printf ${JSON.stringify(listTxt)} > "${R("work/list.txt")}"`);
 sh(`ffmpeg -y -f concat -safe 0 -i "${R("work/list.txt")}" -c copy "${R("work/video.mp4")}"`);
@@ -57,7 +62,8 @@ const videoDur = probe(R("work/video.mp4"));
 const placements = [];
 for (const m of orgM.marks) if (m.id !== "end" && durs[m.id]) placements.push({ id: m.id, at: TITLE + m.at / 1000 });
 for (const m of empM.marks) if (m.id !== "end" && durs[m.id]) placements.push({ id: m.id, at: TITLE + orgDur + m.at / 1000 });
-placements.push({ id: "close", at: TITLE + orgDur + empDur + 0.4 });
+placements.push({ id: "recap", at: TITLE + orgDur + empDur + 0.6 });
+placements.push({ id: "close", at: TITLE + orgDur + empDur + recapDur + 0.6 });
 
 const inputs = placements.map((p) => `-i "${R(`narration/${p.id}.wav`)}"`).join(" ");
 const bgm = "/Volumes/Extreme SSD/Projects/arc/videos/magmos-launch/assets/bgm/track.wav";
