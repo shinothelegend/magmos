@@ -18,18 +18,18 @@ type SpotlightProps = {
   xOffset?: number;
 };
 
-// Brand-tinted, deliberately subtle. Left beam = lime (#ff6a1a ≈ hsl 78°),
-// right beam = violet (#a78bfa ≈ hsl 255°) — the dashboard's accent palette.
+// Brand-tinted, deliberately subtle. Left beam = fire-orange (#ff6a1a ≈ hsl 22°),
+// right beam = gold (#ffb43d ≈ hsl 38°) — the Magmos accent palette.
 const LEFT: Triple = [
-  "radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(78, 88%, 68%, 0.10) 0, hsla(78, 88%, 55%, 0.03) 50%, hsla(78, 88%, 45%, 0) 80%)",
-  "radial-gradient(50% 50% at 50% 50%, hsla(78, 88%, 68%, 0.07) 0, hsla(78, 88%, 55%, 0.03) 80%, transparent 100%)",
-  "radial-gradient(50% 50% at 50% 50%, hsla(78, 88%, 68%, 0.05) 0, hsla(78, 88%, 45%, 0.02) 80%, transparent 100%)",
+  "radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(22, 88%, 68%, 0.10) 0, hsla(22, 88%, 55%, 0.03) 50%, hsla(22, 88%, 45%, 0) 80%)",
+  "radial-gradient(50% 50% at 50% 50%, hsla(22, 88%, 68%, 0.07) 0, hsla(22, 88%, 55%, 0.03) 80%, transparent 100%)",
+  "radial-gradient(50% 50% at 50% 50%, hsla(22, 88%, 68%, 0.05) 0, hsla(22, 88%, 45%, 0.02) 80%, transparent 100%)",
 ];
 
 const RIGHT: Triple = [
-  "radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(255, 90%, 78%, 0.12) 0, hsla(255, 85%, 65%, 0.04) 50%, hsla(255, 85%, 55%, 0) 80%)",
-  "radial-gradient(50% 50% at 50% 50%, hsla(255, 90%, 78%, 0.08) 0, hsla(255, 85%, 65%, 0.03) 80%, transparent 100%)",
-  "radial-gradient(50% 50% at 50% 50%, hsla(255, 90%, 78%, 0.05) 0, hsla(255, 85%, 55%, 0.02) 80%, transparent 100%)",
+  "radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(38, 90%, 78%, 0.12) 0, hsla(38, 85%, 65%, 0.04) 50%, hsla(38, 85%, 55%, 0) 80%)",
+  "radial-gradient(50% 50% at 50% 50%, hsla(38, 90%, 78%, 0.08) 0, hsla(38, 85%, 65%, 0.03) 80%, transparent 100%)",
+  "radial-gradient(50% 50% at 50% 50%, hsla(38, 90%, 78%, 0.05) 0, hsla(38, 85%, 55%, 0.02) 80%, transparent 100%)",
 ];
 
 export function SpotlightNew({

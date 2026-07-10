@@ -9,13 +9,13 @@ export function HeroSection() {
       id="home"
       className="hero-bg relative overflow-hidden px-6 pb-10 pt-28 text-white md:px-12 lg:px-24"
     >
-      {/* spotlight beams — subtle lime + violet */}
+      {/* spotlight beams — subtle orange + gold */}
       <SpotlightNew />
       {/* interactive ripple grid at the top — softened + radially masked so it
           blends into the dark hero */}
       <BackgroundRippleEffect
         rows={6}
-        className="z-0 opacity-70 [mask-image:radial-gradient(125%_85%_at_50%_0%,black_0%,black_38%,transparent_78%)] [--cell-border-color:rgba(255,255,255,0.06)] [--cell-fill-color:rgba(196,245,107,0.035)] [--cell-shadow-color:rgba(196,245,107,0.4)]"
+        className="z-0 opacity-70 [mask-image:radial-gradient(125%_85%_at_50%_0%,black_0%,black_38%,transparent_78%)] [--cell-border-color:rgba(255,255,255,0.06)] [--cell-fill-color:rgba(255,106,26,0.05)] [--cell-shadow-color:rgba(255,106,26,0.4)]"
       />
       {/* ground the dashboard image + fade the hero base into the next section
           (#1a1a1c) so there's no hard seam below */}
@@ -47,10 +47,10 @@ export function HeroSection() {
 
       <div className="relative z-10 mx-auto mt-14 w-full max-w-5xl">
         <img
-          src="/sweem-dashboard.png"
+          src="/magmos-dashboard.png"
           alt="Magmos dashboard — live cross-border payroll streaming"
-          width={755}
-          height={493}
+          width={1440}
+          height={900}
           className="w-full rounded-[18px] [mask-image:linear-gradient(to_bottom,black_0%,black_34%,transparent_82%)]"
         />
       </div>

@@ -8,7 +8,6 @@ import { HeroSection } from "@/components/hero/hero-section";
 import { IntegrationsSection } from "@/components/integrations/integrations-section";
 // import { PricingSection } from "@/components/pricing/pricing-section";
 import { StatsSection } from "@/components/stats/stats-section";
-import { TestimonialsSection } from "@/components/testimonials/testimonials-section";
 
 export default function Home() {
   return (
@@ -20,7 +19,6 @@ export default function Home() {
       <ConfidenceSection />
       <StatsSection />
       {/* <PricingSection /> */}
-      <TestimonialsSection />
       <FaqSection />
       <CtaSection />
       <Footer />

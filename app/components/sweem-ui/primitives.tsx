@@ -160,7 +160,7 @@ export function SweemCard({
       className={cn(
         "group relative overflow-hidden rounded-[22px] border p-5",
         accent
-          ? "border-transparent bg-[var(--sw-mint)] text-black shadow-[0_18px_50px_-12px_rgba(196,245,107,0.45)]"
+          ? "border-transparent bg-[var(--sw-mint)] text-black shadow-[0_18px_50px_-12px_rgba(255,106,26,0.45)]"
           : "border-[var(--sw-border)] bg-[var(--sw-card)] shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset,0_24px_48px_-32px_rgba(0,0,0,0.8)] hover:border-[var(--sw-border-strong)]",
         className
       )}

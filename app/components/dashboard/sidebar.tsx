@@ -24,8 +24,36 @@ type NavItem = {
 
 const navItems: readonly NavItem[] = [
   { icon: "home", label: "Overview", href: "/dashboard" },
-  { icon: "payment", label: "Payroll", href: "/dashboard" },
-  { icon: "customer", label: "Recipients", href: "/dashboard" },
+  { icon: "sparkle", label: "Magmos AI", href: "/dashboard/ai" },
+  { icon: "payment", label: "Payroll", href: "/dashboard/payments" },
+  { icon: "customer", label: "Employees", href: "/dashboard/customers" },
+  { icon: "link", label: "Payment links", href: "/dashboard/payment-links" },
+  {
+    icon: "billing",
+    label: "Billing",
+    href: "/dashboard/billing/subscriptions",
+    matchPrefix: "/dashboard/billing",
+    submenuVariant: "billing",
+    subitems: [{ label: "Subscriptions", href: "/dashboard/billing/subscriptions" }],
+  },
+  { icon: "invoice", label: "Invoices", href: "/dashboard/invoices" },
+  { icon: "box", label: "Products", href: "/dashboard/products" },
+  { icon: "bank", label: "Offramp to Bank", href: "/dashboard/offramp", badge: "Coming soon" },
+  {
+    icon: "developer",
+    label: "Developer",
+    href: "/dashboard/developer/api-keys",
+    matchPrefix: "/dashboard/developer",
+    submenuVariant: "developer",
+    subitems: [
+      { label: "API keys", href: "/dashboard/developer/api-keys" },
+      { label: "Webhooks", href: "/dashboard/developer/webhooks" },
+      { label: "Documentation", href: "/dashboard/developer/documentation" },
+      { label: "API reference", href: "/dashboard/developer/api-reference" },
+      { label: "Components", href: "/dashboard/developer/component" },
+    ],
+  },
+  { icon: "settings", label: "Settings", href: "/dashboard/settings" },
 ] satisfies readonly NavItem[];
 
 function getNavItemState(item: NavItem, pathname: string) {

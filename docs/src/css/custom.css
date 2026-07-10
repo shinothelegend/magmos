@@ -1,0 +1,247 @@
+/**
+ * Magmos documentation theme.
+ * Matches the live product design system in fe/app/globals.css (the --sw-* tokens),
+ * not the deferred brand.md. Brand accent is mint #c4f56b on a dark base, with
+ * black text on mint, lavender #bcaef7 as a secondary accent. Type is Poppins.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+/* Dark is the product default. Mint reads well on the near black base. */
+:root {
+  --sw-mint: #c4f56b;
+  --sw-mint-hover: #cef77f;
+  --sw-lavender: #bcaef7;
+
+  --ifm-color-primary: #c4f56b;
+  --ifm-color-primary-dark: #b6ee4c;
+  --ifm-color-primary-darker: #aceb3c;
+  --ifm-color-primary-darkest: #93d61f;
+  --ifm-color-primary-light: #cef77f;
+  --ifm-color-primary-lighter: #d6f994;
+  --ifm-color-primary-lightest: #e3fcb7;
+
+  --ifm-background-color: #0a0a0b;
+  --ifm-background-surface-color: #0e0e11;
+  --ifm-navbar-background-color: rgba(10, 10, 11, 0.82);
+  --ifm-footer-background-color: #0a0a0b;
+
+  --ifm-font-family-base: "Poppins", system-ui, sans-serif;
+  --ifm-heading-font-family: "Poppins", system-ui, sans-serif;
+  --ifm-font-weight-base: 400;
+  --ifm-heading-font-weight: 600;
+  --ifm-font-color-base: #e9e9ec;
+  --ifm-heading-color: #f4f4f5;
+  --ifm-color-content-secondary: #8c8c92;
+
+  --ifm-toc-border-color: #232328;
+  --ifm-table-border-color: #232328;
+  --ifm-hr-border-color: #232328;
+
+  --ifm-code-font-size: 92%;
+  --ifm-code-background: #1a1a1c;
+  --ifm-code-border-radius: 8px;
+
+  --ifm-global-radius: 12px;
+  --ifm-card-background-color: #1a1a1c;
+  --ifm-link-color: #c4f56b;
+  --ifm-link-hover-decoration: none;
+  --ifm-menu-color-active: #c4f56b;
+
+  --docusaurus-highlighted-code-line-bg: rgba(196, 245, 107, 0.12);
+}
+
+/* Make the dark token set explicit so the toggle stays on brand. */
+[data-theme="dark"] {
+  --ifm-color-primary: #c4f56b;
+  --ifm-color-primary-dark: #b6ee4c;
+  --ifm-color-primary-darker: #aceb3c;
+  --ifm-color-primary-darkest: #93d61f;
+  --ifm-color-primary-light: #cef77f;
+  --ifm-color-primary-lighter: #d6f994;
+  --ifm-color-primary-lightest: #e3fcb7;
+
+  --ifm-background-color: #0a0a0b;
+  --ifm-background-surface-color: #0e0e11;
+  --ifm-navbar-background-color: rgba(10, 10, 11, 0.82);
+  --ifm-footer-background-color: #0a0a0b;
+
+  --ifm-font-color-base: #e9e9ec;
+  --ifm-heading-color: #f4f4f5;
+  --ifm-color-content-secondary: #8c8c92;
+  --ifm-toc-border-color: #232328;
+  --ifm-table-border-color: #232328;
+  --ifm-hr-border-color: #232328;
+  --ifm-code-background: #1a1a1c;
+  --ifm-card-background-color: #1a1a1c;
+  --ifm-link-color: #c4f56b;
+}
+
+/**
+ * Light mode keeps the same hue but uses a deeper green for body links so text
+ * stays legible on white. Mint itself is reserved for buttons and accents, where
+ * it always sits behind black text, exactly as in the product.
+ */
+[data-theme="light"] {
+  --ifm-color-primary: #4d7c0f;
+  --ifm-color-primary-dark: #45700d;
+  --ifm-color-primary-darker: #41690c;
+  --ifm-color-primary-darkest: #36570a;
+  --ifm-color-primary-light: #558811;
+  --ifm-color-primary-lighter: #598f12;
+  --ifm-color-primary-lightest: #69a91e;
+
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #f6f7f4;
+  --ifm-navbar-background-color: rgba(255, 255, 255, 0.85);
+  --ifm-footer-background-color: #f6f7f4;
+
+  --ifm-font-color-base: #18181b;
+  --ifm-heading-color: #0a0a0b;
+  --ifm-color-content-secondary: #5d5d64;
+  --ifm-toc-border-color: #e6e7e2;
+  --ifm-table-border-color: #e6e7e2;
+  --ifm-hr-border-color: #e6e7e2;
+  --ifm-code-background: #f1f3ed;
+  --ifm-card-background-color: #ffffff;
+  --ifm-link-color: #4d7c0f;
+  --ifm-menu-color-active: #4d7c0f;
+
+  --docusaurus-highlighted-code-line-bg: rgba(196, 245, 107, 0.28);
+}
+
+html {
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Navbar: blur and a hairline to feel modern */
+.navbar {
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+  box-shadow: none;
+}
+
+.navbar__title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.navbar__logo img {
+  border-radius: 7px;
+}
+
+/* Headings: tighter, modern tracking */
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  letter-spacing: -0.02em;
+}
+
+.markdown h1:first-child {
+  font-size: 2.4rem;
+}
+
+/* Sidebar */
+.menu {
+  font-size: 0.92rem;
+  font-weight: 400;
+}
+
+.menu__link {
+  border-radius: 8px;
+}
+
+.menu__link--active {
+  font-weight: 500;
+}
+
+.theme-doc-sidebar-item-category > .menu__list-item-collapsible .menu__link {
+  font-weight: 500;
+}
+
+/* Cards */
+.card {
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: 16px;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--sw-mint);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Buttons: mint background with black text, like every CTA in the product */
+.button--primary {
+  --ifm-button-background-color: var(--sw-mint);
+  --ifm-button-border-color: var(--sw-mint);
+  --ifm-button-color: #0a0a0b;
+  color: #0a0a0b;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(196, 245, 107, 0.22);
+}
+
+.button--primary:hover {
+  --ifm-button-background-color: var(--sw-mint-hover);
+  --ifm-button-border-color: var(--sw-mint-hover);
+  background-color: var(--sw-mint-hover);
+  color: #0a0a0b;
+}
+
+.button {
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+/* Code blocks */
+.theme-code-block {
+  border-radius: 14px;
+  border: 1px solid var(--ifm-toc-border-color);
+}
+
+/* Tables */
+.markdown table {
+  border-radius: 12px;
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.markdown table thead {
+  background: var(--ifm-background-surface-color);
+}
+
+/* Admonitions */
+.theme-admonition {
+  border-radius: 12px;
+}
+
+/* Pagination footer cards */
+.pagination-nav__link {
+  border-radius: 14px;
+  border-color: var(--ifm-toc-border-color);
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--sw-mint);
+}
+
+/* Footer */
+.footer {
+  border-top: 1px solid var(--ifm-toc-border-color);
+}
+
+.footer__title {
+  font-weight: 600;
+  color: var(--ifm-heading-color);
+}
+
+/* Breadcrumb home and active link accents pick up the mint automatically */
+.table-of-contents__link--active {
+  font-weight: 500;
+}
