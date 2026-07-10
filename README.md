@@ -9,7 +9,7 @@ Stream USDC to anyone in the world, settled per second. Claim anytime. Bridge ho
 
 <p align="center">
 Built for the <b>Stablecoin Commerce Stack Challenge</b> — Track 1: Best Cross-Border Payments & Remittances Experience (UAE → Global).<br/>
-<b>Live on Arc testnet</b> · chain 5042002 · <a href="https://testnet.arcscan.app/address/0xc810cabdCb4b22df29A54bdb0E124EE3ABA46093">arcscan</a>
+🟢 <a href="https://magmos.vercel.app"><b>Live app → magmos.vercel.app</b></a> · <b>Arc testnet</b> chain 5042002 · <a href="https://testnet.arcscan.app/address/0xc810cabdCb4b22df29A54bdb0E124EE3ABA46093">arcscan</a>
 </p>
 
 ---
@@ -25,10 +25,13 @@ dollar-denominated fees, deterministic finality, no seed phrase required (passke
 
 ```
 magmos/
-├── contracts/   Solidity (Foundry) — 5 contracts live on Arc testnet, 49 tests
-├── app/         Org dashboard (Next.js 16 + wagmi/viem + MongoDB API routes)  → :3100
-├── employee/    Recipient portal (live ticker, claim, vault, CCTP, passkey)   → :3001
-└── scripts/     One-command demo seeder
+├── contracts/       Solidity (Foundry) — 5 contracts live on Arc testnet, 49 tests
+├── app/             Org dashboard + landing (Next.js 16 + wagmi/viem + Mongo)  → :3100  ▲ Vercel
+├── employee/        Recipient portal (live ticker, claim, vault, CCTP, passkey)   → :3001
+├── sdk/             @magmos/sdk — drop-in Pay button + stream client (wagmi/viem)
+├── docs/            Docusaurus developer docs
+├── demo-recording/  Headless recorder → narrated 5-min demo (real on-chain txns)
+└── scripts/         One-command demo seeder
 ```
 
 | Feature | Status |
@@ -77,6 +80,23 @@ cd employee && bun install && PORT=3001 bun dev  # http://localhost:3001
 Wallet setup: add Arc testnet to MetaMask (chain `5042002`, RPC `https://rpc.testnet.arc.network`,
 symbol USDC) and grab gas at [faucet.circle.com](https://faucet.circle.com). Then mint test USDC
 in-app at `/faucet`. Full guide: [RUN.md](RUN.md) · pitch & demo script: [PITCH.md](PITCH.md).
+
+## Deploy (Vercel)
+
+The dashboard + landing (`app/`) runs on Vercel → **[magmos.vercel.app](https://magmos.vercel.app)**.
+
+Deploy your own:
+
+1. Import this repo in Vercel and set **Root Directory = `app`** (the Next.js app lives there, not at the repo root). Next.js 16 is auto-detected and built with the committed `bun.lock`.
+2. Add the environment variables from [`app/.env.example`](app/.env.example):
+   - `MONGODB_URI`, `MONGODB_DB` — metadata store (org/recipient names only; never touches funds)
+   - `NEXT_PUBLIC_ARC_RPC`, `NEXT_PUBLIC_MAGMOS_*`, `NEXT_PUBLIC_USDC` — Arc RPC + contract addresses (all public)
+   - `NEXT_PUBLIC_SITE_URL` — your production URL (OG tags / sitemap)
+   - `ANTHROPIC_API_KEY` *(optional)* — turns on the Magmos AI assistant; falls back to a heuristic if unset
+
+```bash
+cd app && vercel link && vercel --prod   # or connect the repo in the Vercel dashboard
+```
 
 ## Circle stack usage
 
