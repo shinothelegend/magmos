@@ -57,7 +57,7 @@ magmos/
 
 **49 Foundry tests** (unit, fuzz, full-lifecycle, reentrancy-attack) — plus a 3-agent code
 review with every finding fixed and redeployed. The streaming engine ports the battle-tested
-math of [Sweem](https://github.com/snehendu098/sweem) (per-second accrual, pause accounting,
+math of ... (per-second accrual, pause accounting,
 crystallize-on-rate-change, anti-dust claim floor) from Sui Move to Solidity.
 
 ## Quickstart
@@ -80,10 +80,6 @@ cd employee && bun install && PORT=3001 bun dev  # http://localhost:3001
 Wallet setup: add HashKey testnet to MetaMask (chain `133`, RPC `https://hashkey-chain-testnet.rpc.thirdweb.com`,
 symbol HSK) and grab gas at [faucet.hsk.xyz](https://faucet.hsk.xyz). Then mint test USDC
 in-app at `/faucet`. Full guide: [RUN.md](RUN.md) · pitch & demo script: [PITCH.md](PITCH.md).
-
-## Deploy (Vercel)
-
-The dashboard + landing (`app/`) runs on Vercel → **[magmos.vercel.app](https://magmos.vercel.app)**.
 
 Deploy your own:
 
@@ -115,4 +111,3 @@ compile. Everything else above is proven live on-chain.
 
 ---
 
-<p align="center">Magmos is the HashKey-native evolution of <a href="https://github.com/snehendu098/sweem">Sweem</a> (streaming payroll on Sui).</p>
